@@ -16,7 +16,7 @@
             <i class="fa fa-star-o star-rating-empty"></i>
         {% endfor %}
     </span>
-    <span class="rating">{{ rating }}</span>
+    <span class="rating">{{ "%0.1f"|format(rating) }}</span>
     <span class="count">
         {%- trans reviews_count=reviews -%}
             {{ reviews_count }} review

@@ -7,23 +7,16 @@
 # LICENSE file in the root directory of this source tree.
 from __future__ import unicode_literals
 
-import math
-
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from shuup.core.models import ProductMode
 from shuup.xtheme import TemplatedPlugin
 from shuup.xtheme.plugins.forms import TranslatableField
 from shuup_product_reviews.models import ProductReview
-from shuup_product_reviews.utils import get_reviews_aggregation_for_product
-
-ACCEPTED_PRODUCT_MODES = [
-    ProductMode.NORMAL,
-    ProductMode.SIMPLE_VARIATION_PARENT,
-    ProductMode.VARIABLE_VARIATION_PARENT,
-    ProductMode.VARIATION_CHILD
-]
+from shuup_product_reviews.utils import (
+    get_reviews_aggregation_for_product, get_stars_from_rating,
+    is_product_valid_mode
+)
 
 
 class ProductReviewStarRatingsPlugin(TemplatedPlugin):
@@ -50,19 +43,17 @@ class ProductReviewStarRatingsPlugin(TemplatedPlugin):
         context = dict(context)
         product = context["shop_product"].product
 
-        if product and product.mode in ACCEPTED_PRODUCT_MODES:
+        if product and is_product_valid_mode(product):
             product_rating = get_reviews_aggregation_for_product(product)
 
             if product_rating["reviews"]:
                 rating = product_rating["rating"]
                 reviews = product_rating["reviews"]
-                full_stars = math.floor(rating)
-                empty_stars = math.floor(5 - rating)
-                half_star = (full_stars + empty_stars) < 5
+                (full_stars, empty_stars, half_star) = get_stars_from_rating(rating)
                 context.update({
                     "half_star": half_star,
-                    "full_stars": int(full_stars),
-                    "empty_stars": int(empty_stars),
+                    "full_stars": full_stars,
+                    "empty_stars": empty_stars,
                     "reviews": reviews,
                     "rating": rating,
                     "would_recommend": product_rating["would_recommend"],
@@ -92,7 +83,7 @@ class ProductReviewCommentsPlugin(TemplatedPlugin):
         context = dict(context)
         product = context["shop_product"].product
 
-        if product and product.mode in ACCEPTED_PRODUCT_MODES:
+        if product and is_product_valid_mode(product):
             product_ids = [product.pk] + list(product.variation_children.values_list("pk", flat=True))
             reviews = ProductReview.objects.approved().filter(
                 shop=context["request"].shop,
