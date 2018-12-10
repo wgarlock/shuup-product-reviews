@@ -53,6 +53,9 @@ const ReviewComments = {
     view(vnode) {
         return [
             vnode.attrs.title ? m("h3", vnode.attrs.title) : null,
+            (!vnode.state.loading() && !vnode.state.reviews().length) && (
+                m("p", gettext("The product has no reviews."))
+            ),
             m(".reviews",
                 vnode.state.reviews().map((review, index) => m(ReviewComment, { review, index })),
             ),
