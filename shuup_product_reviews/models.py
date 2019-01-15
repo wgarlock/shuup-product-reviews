@@ -8,7 +8,6 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Avg, Case, Count, QuerySet, Sum, Value, When
-from django.db.models.signals import post_delete, post_save
 from django.utils.translation import ugettext_lazy as _
 from enumfields import Enum, EnumIntegerField
 
@@ -62,6 +61,10 @@ class ProductReview(models.Model):
             reviewer_name=self.reviewer.name
         )
 
+    def save(self, *args, **kwargs):
+        super(ProductReview, self).save(*args, **kwargs)
+        recalculate_aggregation(self.product)
+
     def approve(self):
         self.status = ReviewStatus.APPROVED
         self.save()
@@ -85,6 +88,10 @@ class ProductReviewAggregation(models.Model):
 def recalculate_aggregation(product):
     reviews = ProductReview.objects.filter(product=product, status=ReviewStatus.APPROVED)
     if not reviews.exists():
+        # Make sure there is no aggregation since there is no approved reviews
+        aggregation = ProductReviewAggregation.objects.filter(product=product).first()
+        if aggregation:
+            aggregation.delete()
         return
 
     reviews_agg = ProductReview.objects.filter(product=product, status=ReviewStatus.APPROVED).aggregate(
@@ -104,11 +111,3 @@ def recalculate_aggregation(product):
         rating=reviews_agg["rating"],
         would_recommend=reviews_agg["would_recommend"]
     ))
-
-
-def handle_product_review_post_signal(sender, instance, **kwargs):
-    recalculate_aggregation(instance.product)
-
-
-post_delete.connect(handle_product_review_post_signal, sender=ProductReview)
-post_save.connect(handle_product_review_post_signal, sender=ProductReview)
