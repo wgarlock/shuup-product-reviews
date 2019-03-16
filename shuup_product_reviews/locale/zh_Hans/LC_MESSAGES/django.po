@@ -1,0 +1,150 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Jiechao Li <jiechao.li@sesamechat.com>, 2019
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-11-16 12:27+0000\n"
+"PO-Revision-Date: 2019-03-12 23:48+0000\n"
+"Last-Translator: Jiechao Li <jiechao.li@sesamechat.com>, 2019\n"
+"Language-Team: Chinese (Mandarin) (https://www.transifex.com/shuup/teams/55306/cmn/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: cmn\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Product Reviews"
+msgstr "产品评论"
+
+msgid "Approve reviews"
+msgstr "核准审查"
+
+msgid "Reject reviews"
+msgstr "拒绝评审"
+
+msgid "Product"
+msgstr "产品"
+
+msgid "Filter by product..."
+msgstr "按产品过滤..."
+
+msgid "Reviewer"
+msgstr "评论者"
+
+msgid "Rating"
+msgstr "等级"
+
+msgid "Comment"
+msgstr "评论"
+
+msgid "Status"
+msgstr "状态"
+
+msgid "Reviews"
+msgstr "评论"
+
+msgid "Show all"
+msgstr "显示所有"
+
+msgid "Pending"
+msgstr "即将发生的"
+
+msgid "Approved"
+msgstr "批准"
+
+msgid "Rejected"
+msgstr "拒绝"
+
+msgid "shop"
+msgstr "商店"
+
+msgid "product"
+msgstr "产品"
+
+msgid "reviewer"
+msgstr "评论者"
+
+msgid "order"
+msgstr "订单"
+
+msgid "rating"
+msgstr "等级"
+
+msgid "comment"
+msgstr "评论"
+
+msgid "Would recommend to a friend?"
+msgstr "会推荐给朋友吗？"
+
+msgid "Indicates whether you would recommend this product to a friend."
+msgstr "指示是否向朋友推荐此产品。"
+
+#, python-brace-format
+msgid "Review for {product} by {reviewer_name}"
+msgstr "通过{product}检查{reviewer_name}"
+
+msgid "review count"
+msgstr "审查计数"
+
+msgid "users would recommend"
+msgstr "用户建议"
+
+msgid "Product Review Rating"
+msgstr "产品评审等级"
+
+msgid "Customer ratings title"
+msgstr "客户评级标题"
+
+msgid "Customer Ratings:"
+msgstr "顾客评级："
+
+msgid "Show number of customers that recommend the product"
+msgstr "显示推荐该产品的客户数量"
+
+msgid "Whether to show number of customers that recommend the product."
+msgstr "是否显示推荐产品的客户数量。"
+
+msgid "Product Review Comments"
+msgstr "产品评论"
+
+msgid "Title"
+msgstr "标题"
+
+msgid "Last reviews"
+msgstr "最近的评论"
+
+msgid "You haven't made any reviews yet."
+msgstr "你还没做过任何评论。"
+
+#, python-brace-format
+msgid ""
+"<strong>{recommend_count} of {reviews_count} "
+"({recommend_count_percent})</strong> reviewers would recommend this product "
+"to a friend."
+msgstr "<strong>{recommend_count}的{reviews_count}({recommend_count_percent})</strong>审阅者将向朋友推荐此产品。"
+
+msgid "Home"
+msgstr "主页"
+
+msgid "Dashboard"
+msgstr "控制面板"
+
+msgid "Products to Review"
+msgstr "要审查的产品"
+
+msgid "Would you recommend this product to a friend?"
+msgstr "你能把这个产品推荐给朋友吗？"
+
+msgid "Send Review"
+msgstr "发送评论"
+
+msgid "No products to review."
+msgstr "没有产品可供审查。"
