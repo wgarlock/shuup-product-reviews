@@ -1,4 +1,7 @@
+--find-links wheels
+
 shuup
+shuup_multivendor
 mock
 pytest>=3.6
 pytest-cov

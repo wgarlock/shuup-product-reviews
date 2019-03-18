@@ -13,6 +13,7 @@ from faker import Faker
 from shuup.core.models import OrderStatus
 from shuup.testing import factories
 from shuup_product_reviews.models import ProductReview, ReviewStatus
+from shuup_vendor_reviews.models import VendorReview
 
 
 def create_random_review_for_product(shop, product, reviewer=None, order=None, approved=True,
@@ -103,3 +104,38 @@ def create_random_order_to_review(shop, customer):
     order.status = OrderStatus.objects.get_default_complete()
     order.save()
     return order
+
+
+def create_multi_supplier_order_to_review(shop_product, customer):
+    order = factories.create_empty_order(shop=shop_product.shop)
+    order.full_clean()
+    order.save()
+
+    pricing_context = factories._get_pricing_context(order.shop, order.customer)
+    for supplier in shop_product.suppliers.all():
+        factories.add_product_to_order(
+            order, supplier, shop_product.product, 1, shop_product.default_price_value, 0, pricing_context
+        )
+
+    order.cache_prices()
+    order.save()
+
+    order.customer = customer
+    order.create_payment(order.taxful_total_price)
+    for supplier in shop_product.suppliers.all():
+        order.create_shipment_of_all_products(supplier)
+    order.status = OrderStatus.objects.get_default_complete()
+    order.save()
+
+    return order
+
+
+def create_vendor_review_for_order_line(order_line, rating, comment=None, approved=True):
+    return VendorReview.objects.create(
+        shop=order_line.order.shop,
+        supplier=order_line.supplier,
+        reviewer=order_line.order.customer,
+        rating=rating,
+        comment=comment,
+        status=(ReviewStatus.APPROVED if approved else ReviewStatus.PENDING)
+    )
