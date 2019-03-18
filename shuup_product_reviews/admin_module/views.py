@@ -17,19 +17,10 @@ from shuup.admin.utils.views import PicotableListView
 from shuup_product_reviews.models import ProductReview, ReviewStatus
 
 
-class ProductReviewListView(PicotableListView):
+class BaseProductReviewListView(PicotableListView):
     model = ProductReview
-    url_identifier = "product_reviews"
 
     default_columns = [
-        Column(
-            "product",
-            _("Product"),
-            filter_config=TextFilter(
-                filter_field="product__translations__name",
-                placeholder=_("Filter by product...")
-            )
-        ),
         Column(
             "reviewer__name",
             _("Reviewer"),
@@ -50,6 +41,25 @@ class ProductReviewListView(PicotableListView):
             )
         )
     ]
+
+    def __init__(self):
+        super(BaseProductReviewListView, self).__init__()
+        self.columns = self.default_columns
+
+
+class ProductReviewListView(BaseProductReviewListView):
+    url_identifier = "product_reviews"
+
+    default_columns = [
+        Column(
+            "product",
+            _("Product"),
+            filter_config=TextFilter(
+                filter_field="product__translations__name",
+                placeholder=_("Filter by product...")
+            )
+        )
+    ] + BaseProductReviewListView.default_columns
 
     mass_actions = [
         "shuup_product_reviews.admin_module.mass_actions.ApproveProductReviewMassAction",

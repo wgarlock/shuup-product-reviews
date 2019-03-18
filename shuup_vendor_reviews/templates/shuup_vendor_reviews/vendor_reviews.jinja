@@ -1,6 +1,6 @@
 {% extends "shuup/front/dashboard/dashboard.jinja" %}
-{% from "shuup_product_reviews/macros.jinja" import render_reviews_table with context %}
-{% block title -%}{{ _("Reviews") }}{%- endblock %}
+{% from "shuup_vendor_reviews/macros.jinja" import render_reviews_table with context %}
+{% block title -%}{{ _("Vendor Reviews") }}{%- endblock %}
 
 {% block breadcrumb %}
     {% call macros.breadcrumb() %}
@@ -16,26 +16,25 @@
         <form method="POST">
         {{ reviews_formset.management_form }}
         {% csrf_token %}
-        <h3>{{ _("Products to Review") }}</h3>
+        <h3>{{ _("Vendors to Review") }}</h3>
         <div class="table-responsive">
             <table class="table table-bordered table-striped customer-pending-reviews-table">
                 <thead>
                     <tr>
-                        <th class="col-xs-4" class="col-xs-4">{{ _("Product") }}</th>
+                        <th class="col-xs-4" class="col-xs-4">{{ _("Vendor") }}</th>
                         <th class="col-xs-3">{{ _("Rating") }}</th>
                         <th class="col-xs-3">{{ _("Comment") }}</th>
-                        <th class="col-xs-2">{{ _("Would you recommend this product to a friend?") }}</th>
+                        <th class="col-xs-2">{{ _("Would you recommend this vendor to a friend?") }}</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for review_form in reviews_formset %}
                     <tr>
                         <td class="col-xs-4">
-                            {{ review_form.product }}
-                            {% set review_product = review_form.initial.product %}
-                            {% set link_product = review_product.variation_parent if review_product.variation_parent else review_product %}
-                            <a href="{{ url('shuup:product', pk=link_product.pk, slug=link_product.slug) }}">
-                                {{ review_form.initial.product.name }}
+                            {{ review_form.supplier }}
+                            {% set supplier = review_form.initial.supplier %}
+                            <a href="{{ url('shuup:supplier', pk=supplier.pk) }}">
+                                {{ supplier.name }}
                             </a>
                         </td>
                         <td class="col-xs-3">
@@ -58,6 +57,6 @@
         {{ render_reviews_table(reviews) }}
     {% endif %}
     {% if not reviews_formset and not has_reviews %}
-        <p>{{ _("No products to review.") }}</p>
+        <p>{{ _("No vendors to review.") }}</p>
     {% endif %}
 {% endblock %}

@@ -82,7 +82,9 @@ class ProductReviewsView(DashboardViewMixin, TemplateView):
         return HttpResponseRedirect(reverse("shuup:product_reviews"))
 
 
-class ProductReviewCommentsView(View):
+class BaseCommentsView(View):
+    view_name = ""
+
     def get(self, request, *args, **kwargs):
         page = self.get_reviews_page()
         reviews = [
@@ -99,7 +101,7 @@ class ProductReviewCommentsView(View):
         next_page_url = None
         if page.has_next():
             next_page_url = "{}?page={}".format(
-                reverse('shuup:product_review_comments', kwargs=dict(pk=self.kwargs["pk"])),
+                reverse('shuup:%s' % self.view_name, kwargs=dict(pk=self.kwargs["pk"])),
                 page.number + 1
             )
 
@@ -108,6 +110,10 @@ class ProductReviewCommentsView(View):
             "next_page_url": next_page_url,
         }
         return JsonResponse(payload)
+
+
+class ProductReviewCommentsView(BaseCommentsView):
+    view_name = "product_review_comments"
 
     def get_reviews_page(self):
         product = Product.objects.filter(pk=self.kwargs["pk"], shop_products__shop=self.request.shop).first()

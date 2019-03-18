@@ -14,21 +14,21 @@ from shuup.admin.menu import PRODUCTS_MENU_CATEGORY
 from shuup.admin.utils.urls import admin_url
 
 
-class ProductReviewsModule(AdminModule):
-    name = _("Product Reviews")
-    breadcrumbs_menu_entry = MenuEntry(name, url="shuup_admin:product_reviews.list")
+class SupplierReviewsModule(AdminModule):
+    name = _("Vendor Reviews")
+    breadcrumbs_menu_entry = MenuEntry(name, url="shuup_admin:vendor_reviews.list")
 
     def get_urls(self):
         return [
             admin_url(
-                r"^product_reviews/$",
-                "shuup_product_reviews.admin_module.views.ProductReviewListView",
-                name="product_reviews.list"
+                r"^vendor_reviews/$",
+                "shuup_vendor_reviews.admin_module.views.VendorReviewListView",
+                name="vendor_reviews.list"
             ),
             admin_url(
-                r"^product_reviews/list-settings/",
+                r"^vendor_reviews/list-settings/",
                 "shuup.admin.modules.settings.views.ListSettingsView",
-                name="product_reviews.list_settings"
+                name="vendor_reviews.list_settings"
             )
         ]
 
@@ -37,9 +37,9 @@ class ProductReviewsModule(AdminModule):
             MenuEntry(
                 text=self.name,
                 icon="fa fa-star",
-                url="shuup_admin:product_reviews.list",
+                url="shuup_admin:vendor_reviews.list",
                 category=PRODUCTS_MENU_CATEGORY,
                 subcategory="products",
-                ordering=5
+                ordering=6
             )
         ]

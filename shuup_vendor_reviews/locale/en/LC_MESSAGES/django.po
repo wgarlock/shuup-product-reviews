@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Product Reviews"
+msgid "Vendor Reviews"
 msgstr ""
 
 msgid "Approve reviews"
@@ -26,49 +26,22 @@ msgstr ""
 msgid "Reject reviews"
 msgstr ""
 
-msgid "Reviewer"
+msgid "Vendor"
 msgstr ""
 
-msgid "Rating"
-msgstr ""
-
-msgid "Comment"
-msgstr ""
-
-msgid "Status"
-msgstr ""
-
-msgid "Product"
-msgstr ""
-
-msgid "Filter by product..."
-msgstr ""
-
-msgid "Reviews"
+msgid "Filter by vendor..."
 msgstr ""
 
 msgid "Show all"
 msgstr ""
 
-msgid "Pending"
-msgstr ""
-
-msgid "Approved"
-msgstr ""
-
-msgid "Rejected"
-msgstr ""
-
 msgid "shop"
 msgstr ""
 
-msgid "product"
+msgid "supplier"
 msgstr ""
 
 msgid "reviewer"
-msgstr ""
-
-msgid "order"
 msgstr ""
 
 msgid "rating"
@@ -84,7 +57,7 @@ msgid "Indicates whether you would recommend this product to a friend."
 msgstr ""
 
 #, python-brace-format
-msgid "Review for {product} by {reviewer_name}"
+msgid "Review for {supplier} by {reviewer_name}"
 msgstr ""
 
 msgid "review count"
@@ -93,7 +66,7 @@ msgstr ""
 msgid "users would recommend"
 msgstr ""
 
-msgid "Product Review Rating"
+msgid "Vendor Review Rating"
 msgstr ""
 
 msgid "Customer ratings title"
@@ -102,16 +75,19 @@ msgstr ""
 msgid "Customer Ratings:"
 msgstr ""
 
-msgid "Show number of customers that recommend the product"
+msgid "Show number of customers that recommend the vendor"
 msgstr ""
 
-msgid "Whether to show number of customers that recommend the product."
+msgid "Whether to show number of customers that recommend the vendor."
 msgstr ""
 
-msgid "Product Review Comments"
+msgid "Vendor Review Comments"
 msgstr ""
 
 msgid "Title"
+msgstr ""
+
+msgid "Reviews"
 msgstr ""
 
 msgid "Last reviews"
@@ -120,10 +96,10 @@ msgstr ""
 msgid "You haven't made any reviews yet."
 msgstr ""
 
-#, python-brace-format
-msgid ""
-"<strong>{recommend_count} of {reviews_count} ({recommend_count_percent})</"
-"strong> reviewers would recommend this product to a friend."
+msgid "Rating"
+msgstr ""
+
+msgid "Comment"
 msgstr ""
 
 msgid "Home"
@@ -132,14 +108,14 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-msgid "Products to Review"
+msgid "Vendors to Review"
 msgstr ""
 
-msgid "Would you recommend this product to a friend?"
+msgid "Would you recommend this vendor to a friend?"
 msgstr ""
 
 msgid "Send Review"
 msgstr ""
 
-msgid "No products to review."
+msgid "No vendors to review."
 msgstr ""
