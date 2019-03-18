@@ -10,7 +10,7 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 
 from shuup.admin.base import AdminModule, MenuEntry
-from shuup.admin.menu import PRODUCTS_MENU_CATEGORY
+from shuup.admin.menu import SETTINGS_MENU_CATEGORY
 from shuup.admin.utils.urls import admin_url
 
 
@@ -38,8 +38,8 @@ class SupplierReviewsModule(AdminModule):
                 text=self.name,
                 icon="fa fa-star",
                 url="shuup_admin:vendor_reviews.list",
-                category=PRODUCTS_MENU_CATEGORY,
-                subcategory="products",
+                category=SETTINGS_MENU_CATEGORY,
+                subcategory="other_settings",
                 ordering=6
             )
         ]
