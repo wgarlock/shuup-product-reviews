@@ -1,0 +1,36 @@
+{% macro render_reviews_table(reviews, show_supplier_info=False) %}
+<div class="table-responsive">
+    <table class="table table-bordered table-striped customer-reviews-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>{{ _("Vendor") }}</th>
+                <th>{{ _("Rating") }}</th>
+                <th>{{ _("Comment") }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for review in reviews %}
+            <tr>
+                <td>
+                {% if review.supplier.logo %}
+                    <img src="{{ review.supplier.logo|thumbnail(size=(50, 50)) }}" />
+                {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url('shuup:supplier', pk=review.supplier.pk) }}">
+                        {{ review.supplier.name }}
+                    </a>
+                </td>
+                <td>
+                    {% for index in range(review.rating) %}
+                        <i class="fa fa-star rating-star"></i>
+                    {% endfor %}
+                </td>
+                <td>{{ review.comment or "" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endmacro %}

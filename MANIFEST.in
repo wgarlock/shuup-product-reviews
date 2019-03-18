@@ -4,3 +4,6 @@ recursive-include shuup_product_reviews \
     *.mo *.po *.jinja *.js *.css *.png
 
 prune shuup_product_reviews/node_modules
+
+recursive-include shuup_vendor_reviews \
+    *.mo *.po *.jinja *.js *.css *.png
