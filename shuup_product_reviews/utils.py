@@ -37,12 +37,8 @@ def get_pending_products_reviews(request):
     Returns a Product queryset that contains all products
     that can be reviewed by the current request shop and contact
     """
-    orders = Order.objects.complete().filter(
-        shop=request.shop,
-        customer__in=[request.customer, request.person]
-    ).distinct()
     products = Product.objects.all_except_deleted(shop=request.shop).filter(
-        order_lines__order__in=orders,
+        order_lines__order__in=get_orders_for_review(request),
         mode__in=[ProductMode.NORMAL, ProductMode.VARIATION_CHILD]
     ).distinct()
 

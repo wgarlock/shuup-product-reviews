@@ -52,9 +52,6 @@ class ProductReview(models.Model):
 
     objects = ProductReviewQuerySet.as_manager()
 
-    class Meta:
-        unique_together = ("reviewer", "product")
-
     def __str__(self):
         return _("Review for {product} by {reviewer_name}").format(
             product=self.product,
@@ -87,16 +84,12 @@ class ProductReviewAggregation(models.Model):
     would_recommend = models.PositiveIntegerField(verbose_name=_("users would recommend"), default=0)
 
 
-def recalculate_aggregation(product):
-    reviews = ProductReview.objects.filter(product=product, status=ReviewStatus.APPROVED)
-    if not reviews.exists():
+def recalculate_aggregation_for_queryset(queryset):
+    if not queryset.exists():
         # Make sure there is no aggregation since there is no approved reviews
-        aggregation = ProductReviewAggregation.objects.filter(product=product).first()
-        if aggregation:
-            aggregation.delete()
         return
 
-    reviews_agg = ProductReview.objects.filter(product=product, status=ReviewStatus.APPROVED).aggregate(
+    return queryset.aggregate(
         count=Count("pk"),
         rating=Avg("rating"),
         would_recommend=Sum(
@@ -108,6 +101,18 @@ def recalculate_aggregation(product):
             )
         )
     )
+
+
+def recalculate_aggregation(product):
+    reviews_agg = recalculate_aggregation_for_queryset(
+        ProductReview.objects.filter(product=product, status=ReviewStatus.APPROVED)
+    )
+    if not reviews_agg:
+        aggregation = ProductReviewAggregation.objects.filter(product=product).first()
+        if aggregation:
+            aggregation.delete()
+        return
+
     ProductReviewAggregation.objects.update_or_create(product=product, defaults=dict(
         review_count=reviews_agg["count"],
         rating=reviews_agg["rating"],
