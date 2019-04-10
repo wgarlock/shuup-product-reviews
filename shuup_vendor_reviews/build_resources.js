@@ -10,9 +10,9 @@ const { getParcelBuildCommand, runBuildCommands } = require("shuup-static-build-
 
 runBuildCommands([
     getParcelBuildCommand({
-        cacheDir: "shuup-product-reviews",
-        outputDir: "static/shuup_product_reviews",
-        outputFileName: "shuup_product_reviews",
-        entryFile: "static_src/index.js"
+        cacheDir: "shuup-vendor-reviews",
+        outputDir: "static/shuup_vendor_reviews",
+        outputFileName: "shuup_vendor_reviews",
+        entryFile: "../shuup_product_reviews/static_src/index.js"
     })
 ]);

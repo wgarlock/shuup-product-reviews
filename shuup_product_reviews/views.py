@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # This file is part of Shuup Product Reviews Addon.
 #
-# Copyright (c) 2012-2018, Shoop Commerce Ltd. All rights reserved.
+# Copyright (c) 2012-2019, Shoop Commerce Ltd. All rights reserved.
 #
 # This source code is licensed under the OSL-3.0 license found in the
 # LICENSE file in the root directory of this source tree.
@@ -10,8 +10,8 @@ from django.conf import settings
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.core.urlresolvers import reverse
 from django.db.transaction import atomic
-from django.http.response import HttpResponseRedirect, JsonResponse
-from django.views.generic import TemplateView, View
+from django.http.response import HttpResponseRedirect
+from django.views.generic import TemplateView
 
 from shuup.core.models import Product
 from shuup.front.views.dashboard import DashboardViewMixin
@@ -19,6 +19,8 @@ from shuup_product_reviews.models import ProductReview
 from shuup_product_reviews.utils import (
     get_orders_for_review, get_pending_products_reviews
 )
+
+from .base import BaseCommentsView
 
 
 class ProductReviewForm(forms.Form):
@@ -80,36 +82,6 @@ class ProductReviewsView(DashboardViewMixin, TemplateView):
                     form.save()
 
         return HttpResponseRedirect(reverse("shuup:product_reviews"))
-
-
-class BaseCommentsView(View):
-    view_name = ""
-
-    def get(self, request, *args, **kwargs):
-        page = self.get_reviews_page()
-        reviews = [
-            {
-                "id": review.pk,
-                "date": review.created_on.isoformat(),
-                "rating": review.rating,
-                "comment": review.comment,
-                "reviewer": review.reviewer.name,
-            }
-            for review in page.object_list
-        ]
-
-        next_page_url = None
-        if page.has_next():
-            next_page_url = "{}?page={}".format(
-                reverse('shuup:%s' % self.view_name, kwargs=dict(pk=self.kwargs["pk"])),
-                page.number + 1
-            )
-
-        payload = {
-            "reviews": reviews,
-            "next_page_url": next_page_url,
-        }
-        return JsonResponse(payload)
 
 
 class ProductReviewCommentsView(BaseCommentsView):

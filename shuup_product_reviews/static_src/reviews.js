@@ -1,7 +1,7 @@
 /**
  * This file is part of Shuup Product Reviews Addon.
  *
- * Copyright (c) 2012-2018, Shoop Commerce Ltd. All rights reserved.
+ * Copyright (c) 2012-2019, Shoop Commerce Ltd. All rights reserved.
  *
  * This source code is licensed under the OSL-3.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -54,7 +54,7 @@ const ReviewComments = {
         return [
             vnode.attrs.title ? m("h3", vnode.attrs.title) : null,
             (!vnode.state.loading() && !vnode.state.reviews().length) && (
-                m("p", gettext("The product has no reviews."))
+                m("p", vnode.attrs.noReviewsText)
             ),
             m(".reviews",
                 vnode.state.reviews().map((review, index) => m(ReviewComment, { review, index })),
@@ -66,7 +66,7 @@ const ReviewComments = {
                         onclick() {
                             vnode.state.loadNextPage();
                         }
-                    }, gettext("Load more comments"))
+                    }, vnode.attrs.loadMoreText)
                 )
             ) : null,
             vnode.state.loading() ? m("p.text-center", m("i.fa.fa-spin.fa-spinner.fa-2x")) : null
