@@ -16,6 +16,9 @@ class AppConfig(shuup.apps.AppConfig):
         "admin_module": [
             "shuup_product_reviews.admin_module.ProductReviewsModule"
         ],
+        "admin_shop_form_part": [
+            "shuup_product_reviews.admin_module.dashboard.ProductReviewsSettingsFormPart",
+        ],
         "xtheme_plugin": [
             "shuup_product_reviews.plugins.ProductReviewStarRatingsPlugin",
             "shuup_product_reviews.plugins.ProductReviewCommentsPlugin"
