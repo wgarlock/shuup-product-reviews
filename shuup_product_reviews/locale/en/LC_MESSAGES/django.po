@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-11 15:32+0000\n"
+"POT-Creation-Date: 2019-04-11 21:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,6 +30,15 @@ msgid "Comment"
 msgstr ""
 
 msgid "Status"
+msgstr ""
+
+msgid "Product Reviews Settings"
+msgstr ""
+
+msgid "Show product reviews on dashboard"
+msgstr ""
+
+msgid "Show product reviews on dashboard menu"
 msgstr ""
 
 msgid "Approve reviews"
