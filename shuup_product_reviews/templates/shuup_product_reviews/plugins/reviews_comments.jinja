@@ -1,3 +1,9 @@
 {% if review_product %}
-<div class="product-review-comments" data-url="{{ url('shuup:product_review_comments', pk=review_product.pk) }}" data-title="{{ title or "" }}"></div>
+<div
+    class="product-review-comments"
+    data-url="{{ url('shuup:product_review_comments', pk=review_product.pk) }}"
+    data-title="{{ title or "" }}"
+    data-no-reviews-text="{{ no_reviews_text or _('The product has no reviews.') }}"
+    data-load-more-text="{{ load_more_text or _('Load more reviews') }}"
+></div>
 {% endif %}

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # This file is part of Shuup Product Reviews Addon.
 #
-# Copyright (c) 2012-2018, Shoop Commerce Ltd. All rights reserved.
+# Copyright (c) 2012-2019, Shoop Commerce Ltd. All rights reserved.
 #
 # This source code is licensed under the OSL-3.0 license found in the
 # LICENSE file in the root directory of this source tree.
@@ -15,8 +15,8 @@ from django.views.generic import TemplateView
 
 from shuup.core.models import Supplier
 from shuup.front.views.dashboard import DashboardViewMixin
-from shuup_product_reviews.models import ReviewStatus
-from shuup_product_reviews.views import BaseCommentsView
+from shuup_product_reviews.base import BaseCommentsView
+from shuup_product_reviews.enums import ReviewStatus
 from shuup_vendor_reviews.models import VendorReview
 from shuup_vendor_reviews.utils import get_pending_vendors_reviews
 
@@ -94,7 +94,7 @@ class VendorReviewCommentsView(BaseCommentsView):
             supplier=supplier, shop=self.request.shop, comment__isnull=False
         ).order_by("-created_on")
 
-        paginator = Paginator(queryset, settings.PRODUCT_REVIEWS_PAGE_SIZE)
+        paginator = Paginator(queryset, settings.VENDOR_REVIEWS_PAGE_SIZE)
         page = self.request.GET.get('page')
 
         try:

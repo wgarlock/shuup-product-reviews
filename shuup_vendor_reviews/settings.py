@@ -5,4 +5,6 @@
 #
 # This source code is licensed under the OSL-3.0 license found in the
 # LICENSE file in the root directory of this source tree.
-default_app_config = __name__ + ".apps.AppConfig"
+
+#: The number of reviews to load on each page
+VENDOR_REVIEWS_PAGE_SIZE = 5

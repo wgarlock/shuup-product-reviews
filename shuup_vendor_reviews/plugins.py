@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # This file is part of Shuup Product Reviews Addon.
 #
-# Copyright (c) 2012-2018, Shoop Commerce Ltd. All rights reserved.
+# Copyright (c) 2012-2019, Shoop Commerce Ltd. All rights reserved.
 #
 # This source code is licensed under the OSL-3.0 license found in the
 # LICENSE file in the root directory of this source tree.
@@ -12,9 +12,10 @@ from django.utils.translation import ugettext_lazy as _
 
 from shuup.xtheme import TemplatedPlugin
 from shuup.xtheme.plugins.forms import TranslatableField
-from shuup_product_reviews.utils import get_stars_from_rating
 from shuup_vendor_reviews.models import VendorReview
-from shuup_vendor_reviews.utils import get_reviews_aggregation_for_supplier
+from shuup_vendor_reviews.utils import (
+    get_reviews_aggregation_for_supplier, get_stars_from_rating
+)
 
 
 class VendorReviewStarRatingsPlugin(TemplatedPlugin):
@@ -74,7 +75,17 @@ class VendorReviewCommentsPlugin(TemplatedPlugin):
             label=_("Title"),
             required=False,
             initial=_("Reviews")
-        ))
+        )),
+        ("no_reviews_text", TranslatableField(
+            label=_("No reviews text"),
+            required=False,
+            initial=_("The vendor has no reviews.")
+        )),
+        ("load_more_text", TranslatableField(
+            label=_("Load more reviews text"),
+            required=False,
+            initial=_("Load more comments")
+        )),
     ]
 
     def get_context_data(self, context):
@@ -90,5 +101,7 @@ class VendorReviewCommentsPlugin(TemplatedPlugin):
             if reviews.exists():
                 context["review_supplier"] = supplier
                 context["title"] = self.get_translated_value("title")
+                context["no_reviews_text"] = self.get_translated_value("no_reviews_text")
+                context["load_more_text"] = self.get_translated_value("load_more_text")
 
         return context

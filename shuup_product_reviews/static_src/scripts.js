@@ -1,7 +1,7 @@
 /**
  * This file is part of Shuup Product Reviews Addon.
  *
- * Copyright (c) 2012-2018, Shoop Commerce Ltd. All rights reserved.
+ * Copyright (c) 2012-2019, Shoop Commerce Ltd. All rights reserved.
  *
  * This source code is licensed under the OSL-3.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -24,9 +24,11 @@ import ReviewComments from "./reviews";
     Array.from(document.getElementsByClassName("product-review-comments")).forEach((element) => {
         const commentsUrl = element.getAttribute("data-url");
         const title = element.getAttribute("data-title");
+        const noReviewsText = element.getAttribute("data-no-reviews-text");
+        const loadMoreText = element.getAttribute("data-load-more-text");
         m.mount(element, {
             view() {
-                return m(ReviewComments, { title, commentsUrl });
+                return m(ReviewComments, { title, commentsUrl, noReviewsText, loadMoreText });
             }
         });
     });

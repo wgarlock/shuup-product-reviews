@@ -1,18 +1,25 @@
 # -*- coding: utf-8 -*-
 # This file is part of Shuup Product Reviews Addon.
 #
-# Copyright (c) 2012-2018, Shoop Commerce Ltd. All rights reserved.
+# Copyright (c) 2012-2019, Shoop Commerce Ltd. All rights reserved.
 #
 # This source code is licensed under the OSL-3.0 license found in the
 # LICENSE file in the root directory of this source tree.
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models import Avg, Case, Count, Sum, Value, When
 from django.utils.translation import ugettext_lazy as _
 from enumfields import EnumIntegerField
 
-from shuup_product_reviews.models import (
-    ProductReviewQuerySet, recalculate_aggregation_for_queryset, ReviewStatus
-)
+from shuup_product_reviews.enums import ReviewStatus
+
+
+class VendorReviewQuerySet(models.QuerySet):
+    def for_reviewer(self, shop, reviewer):
+        return self.filter(shop=shop, reviewer=reviewer)
+
+    def approved(self):
+        return self.filter(status=ReviewStatus.APPROVED)
 
 
 class VendorReview(models.Model):
@@ -33,7 +40,7 @@ class VendorReview(models.Model):
     created_on = models.DateTimeField(auto_now_add=True, db_index=True)
     modified_on = models.DateTimeField(auto_now=True)
 
-    objects = ProductReviewQuerySet.as_manager()
+    objects = VendorReviewQuerySet.as_manager()
 
     def __str__(self):
         return _("Review for {supplier} by {reviewer_name}").format(
@@ -65,6 +72,25 @@ class VendorReviewAggregation(models.Model):
     rating = models.DecimalField(max_digits=2, decimal_places=1, verbose_name=_("rating"), default=0)
     review_count = models.PositiveIntegerField(verbose_name=_("review count"), default=0)
     would_recommend = models.PositiveIntegerField(verbose_name=_("users would recommend"), default=0)
+
+
+def recalculate_aggregation_for_queryset(queryset):
+    if not queryset.exists():
+        # Make sure there is no aggregation since there is no approved reviews
+        return
+
+    return queryset.aggregate(
+        count=Count("pk"),
+        rating=Avg("rating"),
+        would_recommend=Sum(
+            Case(
+                When(would_recommend=True, then=Value(1)),
+                When(would_recommend=False, then=Value(0)),
+                default=Value(0),
+                output_field=models.PositiveIntegerField()
+            )
+        )
+    )
 
 
 def recalculate_aggregation(supplier):

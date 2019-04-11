@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # This file is part of Shuup Product Reviews Addon.
 #
-# Copyright (c) 2012-2018, Shoop Commerce Ltd. All rights reserved.
+# Copyright (c) 2012-2019, Shoop Commerce Ltd. All rights reserved.
 #
 # This source code is licensed under the OSL-3.0 license found in the
 # LICENSE file in the root directory of this source tree.
@@ -76,7 +76,17 @@ class ProductReviewCommentsPlugin(TemplatedPlugin):
             label=_("Title"),
             required=False,
             initial=_("Reviews")
-        ))
+        )),
+        ("no_reviews_text", TranslatableField(
+            label=_("No reviews text"),
+            required=False,
+            initial=_("The vendor has no reviews.")
+        )),
+        ("load_more_text", TranslatableField(
+            label=_("Load more reviews text"),
+            required=False,
+            initial=_("Load more comments")
+        )),
     ]
 
     def get_context_data(self, context):
@@ -93,5 +103,7 @@ class ProductReviewCommentsPlugin(TemplatedPlugin):
             if reviews.exists():
                 context["review_product"] = product
                 context["title"] = self.get_translated_value("title")
+                context["no_reviews_text"] = self.get_translated_value("no_reviews_text")
+                context["load_more_text"] = self.get_translated_value("load_more_text")
 
         return context
