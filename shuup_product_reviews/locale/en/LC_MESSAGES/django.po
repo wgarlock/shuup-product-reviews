@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-18 22:52+0000\n"
+"POT-Creation-Date: 2019-04-11 15:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,12 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Product Reviews"
-msgstr ""
-
-msgid "Approve reviews"
-msgstr ""
-
-msgid "Reject reviews"
 msgstr ""
 
 msgid "Reviewer"
@@ -36,6 +30,12 @@ msgid "Comment"
 msgstr ""
 
 msgid "Status"
+msgstr ""
+
+msgid "Approve reviews"
+msgstr ""
+
+msgid "Reject reviews"
 msgstr ""
 
 msgid "Product"
@@ -114,10 +114,28 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
+msgid "No reviews text"
+msgstr ""
+
+msgid "The vendor has no reviews."
+msgstr ""
+
+msgid "Load more reviews text"
+msgstr ""
+
+msgid "Load more comments"
+msgstr ""
+
 msgid "Last reviews"
 msgstr ""
 
 msgid "You haven't made any reviews yet."
+msgstr ""
+
+msgid "The product has no reviews."
+msgstr ""
+
+msgid "Load more reviews"
 msgstr ""
 
 #, python-brace-format
