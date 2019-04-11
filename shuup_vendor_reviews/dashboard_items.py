@@ -10,6 +10,10 @@ from django.utils.translation import ugettext_lazy as _
 from shuup.front.utils.dashboard import DashboardItem
 from shuup_vendor_reviews.models import VendorReview
 
+from .admin_module.dashboard import (
+    is_dashboard_enabled, is_dashboard_menu_enabled
+)
+
 
 class VendorReviewDashboardItem(DashboardItem):
     template_name = "shuup_vendor_reviews/dashboard_item.jinja"
@@ -17,6 +21,12 @@ class VendorReviewDashboardItem(DashboardItem):
     icon = "fa fa-star"
     view_text = _("Show all")
     _url = "shuup:vendor_reviews"
+
+    def show_on_menu(self):
+        return is_dashboard_enabled(self.request.shop)
+
+    def show_on_dashboard(self):
+        return is_dashboard_menu_enabled(self.request.shop)
 
     def get_context(self):
         context = super(VendorReviewDashboardItem, self).get_context()

@@ -16,6 +16,9 @@ class AppConfig(shuup.apps.AppConfig):
         "admin_module": [
             "shuup_vendor_reviews.admin_module.SupplierReviewsModule"
         ],
+        "admin_shop_form_part": [
+            "shuup_vendor_reviews.admin_module.dashboard.VendorReviewsSettingsFormPart",
+        ],
         "xtheme_plugin": [
             "shuup_vendor_reviews.plugins.VendorReviewStarRatingsPlugin",
             "shuup_vendor_reviews.plugins.VendorReviewCommentsPlugin"
