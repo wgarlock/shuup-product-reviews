@@ -23,10 +23,10 @@ class ProductReviewDashboardItem(DashboardItem):
     _url = "shuup:product_reviews"
 
     def show_on_menu(self):
-        return is_dashboard_enabled(self.request.shop)
+        return is_dashboard_menu_enabled(self.request.shop)
 
     def show_on_dashboard(self):
-        return is_dashboard_menu_enabled(self.request.shop)
+        return is_dashboard_enabled(self.request.shop)
 
     def get_context(self):
         context = super(ProductReviewDashboardItem, self).get_context()
