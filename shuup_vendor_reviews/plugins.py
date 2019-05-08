@@ -44,7 +44,6 @@ class VendorReviewStarRatingsPlugin(TemplatedPlugin):
 
         if supplier and supplier.enabled:
             supplier_rating = get_reviews_aggregation_for_supplier(supplier)
-            print(supplier_rating)
             if supplier_rating["reviews"]:
                 rating = supplier_rating["rating"]
                 reviews = supplier_rating["reviews"]
