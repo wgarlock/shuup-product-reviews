@@ -15,7 +15,8 @@ Review Flow
 4. Once review is received, go to admin and approve/reject reviews.
 5. Setup review plugin to product detail. One for reviews summary and one for comments. Use placeholder that is shown to all products to avoid setting plugins to all products individually.
 
-![Flow](https://github.com/shuup/shuup-product-reviews/blob/master/reviews.png)
+.. image:: https://github.com/shuup/shuup-product-reviews/blob/master/reviews.png
+
 
 Copyright
 ---------
