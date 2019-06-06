@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-11 21:52+0000\n"
+"POT-Creation-Date: 2019-06-06 14:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -117,12 +117,6 @@ msgstr ""
 msgid "You haven't made any reviews yet."
 msgstr ""
 
-msgid "Rating"
-msgstr ""
-
-msgid "Comment"
-msgstr ""
-
 msgid "Home"
 msgstr ""
 
@@ -132,11 +126,11 @@ msgstr ""
 msgid "Vendors to Review"
 msgstr ""
 
-msgid "Would you recommend this vendor to a friend?"
-msgstr ""
-
 msgid "Send Review"
 msgstr ""
 
 msgid "No vendors to review."
+msgstr ""
+
+msgid "I would recommend this to a friend"
 msgstr ""

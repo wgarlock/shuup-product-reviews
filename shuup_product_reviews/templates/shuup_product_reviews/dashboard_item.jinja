@@ -4,9 +4,7 @@
 {% block dashboard_item_content %}
     {% if reviews %}
         <h3>{{ _("Last reviews") }}</h3>
-         <div class="table-responsive">
-            {{ render_reviews_table(reviews) }}
-        </div>
+        {{ render_reviews_table(reviews) }}
     {% else %}
         <p id="no-reviews-found" class="lead">
             <i class="fa fa-info-circle text-info"></i> {% trans %}You haven't made any reviews yet.{% endtrans %}

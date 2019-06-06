@@ -1,5 +1,6 @@
 {% extends "shuup/front/dashboard/dashboard.jinja" %}
 {% from "shuup_product_reviews/macros.jinja" import render_reviews_table with context %}
+{% from "shuup/front/macros/general.jinja" import render_field with context %}
 {% block title -%}{{ _("Reviews") }}{%- endblock %}
 
 {% block breadcrumb %}
@@ -17,36 +18,26 @@
         {{ reviews_formset.management_form }}
         {% csrf_token %}
         <h3>{{ _("Products to Review") }}</h3>
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped customer-pending-reviews-table">
-                <thead>
-                    <tr>
-                        <th class="col-xs-4" class="col-xs-4">{{ _("Product") }}</th>
-                        <th class="col-xs-3">{{ _("Rating") }}</th>
-                        <th class="col-xs-3">{{ _("Comment") }}</th>
-                        <th class="col-xs-2">{{ _("Would you recommend this product to a friend?") }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for review_form in reviews_formset %}
-                    <tr>
-                        <td class="col-xs-4">
-                            {{ review_form.product }}
-                            {% set review_product = review_form.initial.product %}
-                            {% set link_product = review_product.variation_parent if review_product.variation_parent else review_product %}
-                            <a href="{{ url('shuup:product', pk=link_product.pk, slug=link_product.slug) }}">
-                                {{ review_form.initial.product.name }}
-                            </a>
-                        </td>
-                        <td class="col-xs-3">
-                            {{ review_form.rating }}
-                        </td>
-                        <td class="col-xs-3">{{ review_form.comment }}</td>
-                        <td class="col-xs-2">{{ review_form.would_recommend }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+
+        <div class="list-group products-to-review">
+            {% for review_form in reviews_formset %}
+                {% set review_product = review_form.initial.product %}
+                {% set link_product = review_product.variation_parent if review_product.variation_parent else review_product %}
+
+                <div class="list-group-item">
+                    {{ review_form.product }}
+                    <div class="list-group-item-heading">
+                        <a href="{{ url('shuup:product', pk=link_product.pk, slug=link_product.slug) }}">
+                            {{ review_form.initial.product.name }}
+                        </a>
+                    </div>
+                    <div class="list-group-item-text">
+                        <div class="review-rating">{{ review_form.rating }}</div>
+                        <div class="review-comment">{{ render_field(review_form.comment) }}</div>
+                        <div class="review-recommend">{{ render_field(review_form.would_recommend) }}</div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
         <div class="text-center">
             <button type="submit" class="btn btn-primary">{{ _("Send Review") }}</button>

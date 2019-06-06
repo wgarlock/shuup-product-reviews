@@ -11,6 +11,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.core.urlresolvers import reverse
 from django.db.transaction import atomic
 from django.http.response import HttpResponseRedirect
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView
 
 from shuup.core.models import Supplier
@@ -30,7 +31,7 @@ class VendorReviewForm(forms.Form):
         required=False
     )
     comment = forms.CharField(required=False, widget=forms.Textarea(attrs=dict(rows=2)))
-    would_recommend = forms.BooleanField(required=False)
+    would_recommend = forms.BooleanField(required=False, label=_("I would recommend this to a friend"))
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-11 21:52+0000\n"
+"POT-Creation-Date: 2019-06-06 14:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -162,11 +162,11 @@ msgstr ""
 msgid "Products to Review"
 msgstr ""
 
-msgid "Would you recommend this product to a friend?"
-msgstr ""
-
 msgid "Send Review"
 msgstr ""
 
 msgid "No products to review."
+msgstr ""
+
+msgid "I would recommend this to a friend"
 msgstr ""

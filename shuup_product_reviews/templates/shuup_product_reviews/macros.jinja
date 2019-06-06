@@ -1,39 +1,33 @@
 {% macro render_reviews_table(reviews) %}
-<div class="table-responsive">
-    <table class="table table-bordered table-striped customer-reviews-table">
-        <thead>
-            <tr>
-                <th></th>
-                <th>{{ _("Product") }}</th>
-                <th>{{ _("Rating") }}</th>
-                <th>{{ _("Comment") }}</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for review in reviews %}
-            <tr>
-                <td>
-                {% if review.product.primary_image %}
-                    <img src="{{ review.product.primary_image|thumbnail(size=(50, 50)) }}" />
-                {% elif review.product.variation_parent and review.product.variation_parent.primary_image %}
-                    <img src="{{ review.product.variation_parent.primary_image|thumbnail(size=(50, 50)) }}" />
-                {% endif %}
-                </td>
-                <td>
+<div class="list-group customer-reviews-table">
+    {% for review in reviews %}
+        <div class="list-group-item">
+            <div class="list-group-item-heading">
+                <div class="text-center image-container">
+                    {% if review.product.primary_image %}
+                        <img src="{{ review.product.primary_image|thumbnail(size=(50, 50)) }}" />
+                    {% elif review.product.variation_parent and review.product.variation_parent.primary_image %}
+                        <img src="{{ review.product.variation_parent.primary_image|thumbnail(size=(50, 50)) }}" />
+                    {% endif %}
+                </div>
+                <div class="text-center name-container">
                     {% set link_product = review.product.variation_parent if review.product.variation_parent else review.product %}
                     <a href="{{ url('shuup:product', pk=link_product.pk, slug=link_product.slug) }}">
                         {{ review.product.name }}
                     </a>
-                </td>
-                <td>
+                </div>
+            </div>
+            <div class="list-group-item-text">
+                <div class="review-rating text-center">
                     {% for index in range(review.rating) %}
                         <i class="fa fa-star rating-star"></i>
                     {% endfor %}
-                </td>
-                <td>{{ review.comment or "" }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                </div>
+                <div class="review-comment">
+                    {{ review.comment or "" }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 </div>
 {% endmacro %}
