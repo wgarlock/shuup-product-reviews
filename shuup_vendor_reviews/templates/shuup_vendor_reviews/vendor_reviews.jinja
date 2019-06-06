@@ -1,5 +1,6 @@
 {% extends "shuup/front/dashboard/dashboard.jinja" %}
 {% from "shuup_vendor_reviews/macros.jinja" import render_reviews_table with context %}
+{% from "shuup/front/macros/general.jinja" import render_field with context %}
 {% block title -%}{{ _("Vendor Reviews") }}{%- endblock %}
 
 {% block breadcrumb %}
@@ -17,35 +18,21 @@
         {{ reviews_formset.management_form }}
         {% csrf_token %}
         <h3>{{ _("Vendors to Review") }}</h3>
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped customer-pending-reviews-table">
-                <thead>
-                    <tr>
-                        <th class="col-xs-4" class="col-xs-4">{{ _("Vendor") }}</th>
-                        <th class="col-xs-3">{{ _("Rating") }}</th>
-                        <th class="col-xs-3">{{ _("Comment") }}</th>
-                        <th class="col-xs-2">{{ _("Would you recommend this vendor to a friend?") }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for review_form in reviews_formset %}
-                    <tr>
-                        <td class="col-xs-4">
-                            {{ review_form.supplier }}
-                            {% set supplier = review_form.initial.supplier %}
-                            <a href="{{ url('shuup:supplier', pk=supplier.pk) }}">
-                                {{ supplier.name }}
-                            </a>
-                        </td>
-                        <td class="col-xs-3">
-                            {{ review_form.rating }}
-                        </td>
-                        <td class="col-xs-3">{{ review_form.comment }}</td>
-                        <td class="col-xs-2">{{ review_form.would_recommend }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+        <div class="list-group vendors-to-review">
+            {% for review_form in reviews_formset %}
+                {% set supplier = review_form.initial.supplier %}
+                <div class="list-group-item">
+                    {{ review_form.supplier }}
+                    <div class="list-group-item-heading">
+                        {{ supplier.name }}
+                    </div>
+                    <div class="list-group-item-text">
+                        <div class="review-rating">{{ review_form.rating }}</div>
+                        <div class="review-comment">{{ render_field(review_form.comment) }}</div>
+                        <div class="review-recommend">{{ render_field(review_form.would_recommend) }}</div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
         <div class="text-center">
             <button type="submit" class="btn btn-primary">{{ _("Send Review") }}</button>

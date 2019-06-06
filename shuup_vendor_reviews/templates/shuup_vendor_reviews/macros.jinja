@@ -1,36 +1,30 @@
 {% macro render_reviews_table(reviews, show_supplier_info=False) %}
-<div class="table-responsive">
-    <table class="table table-bordered table-striped customer-reviews-table">
-        <thead>
-            <tr>
-                <th></th>
-                <th>{{ _("Vendor") }}</th>
-                <th>{{ _("Rating") }}</th>
-                <th>{{ _("Comment") }}</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for review in reviews %}
-            <tr>
-                <td>
-                {% if review.supplier.logo %}
+<div class="list-group customer-reviews-table">
+    {% for review in reviews %}
+    <div class="list-group-item">
+        <div class="list-group-item-heading">
+            {% if review.supplier.logo %}
+                <div class="text-center image-container">
                     <img src="{{ review.supplier.logo|thumbnail(size=(50, 50)) }}" />
-                {% endif %}
-                </td>
-                <td>
-                    <a href="{{ url('shuup:supplier', pk=review.supplier.pk) }}">
-                        {{ review.supplier.name }}
-                    </a>
-                </td>
-                <td>
-                    {% for index in range(review.rating) %}
-                        <i class="fa fa-star rating-star"></i>
-                    {% endfor %}
-                </td>
-                <td>{{ review.comment or "" }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                </div>
+            {% endif %}
+            <div class="text-center name-container">
+                <a href="{{ url('shuup:supplier', pk=review.supplier.pk) }}">
+                    {{ review.supplier.name }}
+                </a>
+            </div>
+        </div>
+        <div class="list-group-item-text">
+            <div class="review-rating text-center">
+                {% for index in range(review.rating) %}
+                    <i class="fa fa-star rating-star"></i>
+                {% endfor %}
+            </div>
+            <div class="review-comment">
+                {{ review.comment or "" }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 {% endmacro %}
