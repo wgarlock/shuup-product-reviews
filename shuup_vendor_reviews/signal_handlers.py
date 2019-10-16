@@ -15,7 +15,7 @@ from shuup_vendor_reviews.notify_events import (
 
 
 @receiver(post_save, sender=VendorReview)
-def on_product_review_created(sender, instance, created, **kwargs):
+def on_vendor_review_created(sender, instance, created, **kwargs):
     if not created:
         return
 

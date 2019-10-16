@@ -9,6 +9,7 @@ import math
 
 from django.db.models import Avg, Sum
 
+from shuup import configuration
 from shuup.core import cache
 from shuup.core.models import Order, Product, ProductMode
 from shuup_product_reviews.models import ProductReviewAggregation
@@ -19,6 +20,10 @@ ACCEPTED_PRODUCT_MODES = [
     ProductMode.VARIABLE_VARIATION_PARENT,
     ProductMode.VARIATION_CHILD
 ]
+
+
+def get_ignored_product_types_ids(shop):
+    return configuration.get(shop, "product_review_ignore_product_types") or []
 
 
 def get_orders_for_review(request):
@@ -37,10 +42,15 @@ def get_pending_products_reviews(request):
     Returns a Product queryset that contains all products
     that can be reviewed by the current request shop and contact
     """
+    ignored_product_types = get_ignored_product_types_ids(request.shop)
+
     products = Product.objects.all_except_deleted(shop=request.shop).filter(
         order_lines__order__in=get_orders_for_review(request),
         mode__in=[ProductMode.NORMAL, ProductMode.VARIATION_CHILD]
     ).distinct()
+
+    if ignored_product_types:
+        products = products.exclude(type__in=ignored_product_types)
 
     return products.exclude(product_reviews__reviewer=request.person)
 

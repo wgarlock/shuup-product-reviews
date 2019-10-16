@@ -34,7 +34,7 @@ class AppConfig(shuup.apps.AppConfig):
         ],
         "notify_event": [
             "shuup_product_reviews.notify_events.ProductReviewCreated"
-        ]
+        ],
     }
 
     def ready(self):
