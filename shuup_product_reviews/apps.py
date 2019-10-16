@@ -31,5 +31,12 @@ class AppConfig(shuup.apps.AppConfig):
         ],
         "xtheme_resource_injection": [
             "shuup_product_reviews.resources:add_resources"
+        ],
+        "notify_event": [
+            "shuup_product_reviews.notify_events.ProductReviewCreated"
         ]
     }
+
+    def ready(self):
+        # connect signals
+        import shuup_product_reviews.signal_handlers    # noqa (C901)
