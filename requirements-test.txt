@@ -1,7 +1,6 @@
 --find-links wheels
 
-shuup
-shuup_multivendor
+shuup==1.9.11b5
 mock
 pytest>=3.6
 pytest-cov
