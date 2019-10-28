@@ -21,5 +21,5 @@ def add_resources(context, content):
         if match and match.app_name == "shuup_admin":
             return
 
-    add_resource(context, "head_end", "%s?v=0.3.7.css" % static("shuup_vendor_reviews/shuup_vendor_reviews.css"))
-    add_resource(context, "body_end", "%s?v=0.3.7.js" % static("shuup_vendor_reviews/shuup_vendor_reviews.js"))
+    add_resource(context, "head_end", "%s?v=0.4.0.css" % static("shuup_vendor_reviews/shuup_vendor_reviews.css"))
+    add_resource(context, "body_end", "%s?v=0.4.0.js" % static("shuup_vendor_reviews/shuup_vendor_reviews.js"))
