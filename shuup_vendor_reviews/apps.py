@@ -34,6 +34,9 @@ class AppConfig(shuup.apps.AppConfig):
         ],
         "notify_event": [
             "shuup_vendor_reviews.notify_events.VendorReviewCreated"
+        ],
+        "api_populator": [
+            "shuup_vendor_reviews.api.populate_api"
         ]
     }
 

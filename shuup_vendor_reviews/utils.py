@@ -9,18 +9,22 @@ import math
 
 from django.db.models import Avg, Sum
 
-from shuup.core.models import Order, Supplier
+from shuup.core.models import get_person_contact, Order, Supplier
 from shuup_vendor_reviews.models import VendorReviewAggregation
 
 
 def get_orders_for_review(request):
     """
     Returns an order queryset that contains all products that could be reviewed.
-    It is basically any completed orders.
+    It is basically any paid order.
     """
-    return Order.objects.complete().filter(
+    return Order.objects.paid().filter(
         shop=request.shop,
-        customer__in=[request.customer, request.person]
+        customer__in=set([
+            customer
+            for customer in [get_person_contact(request.user), request.customer, request.person]
+            if customer
+        ])
     )
 
 
