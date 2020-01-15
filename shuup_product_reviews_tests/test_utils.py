@@ -44,6 +44,9 @@ def test_ignored_products(rf):
     supplier = factories.get_default_supplier()
     invalid_type = ProductType.objects.create(name="invalid")
     customer = factories.create_random_person()
+    user = factories.create_random_user()
+    customer.user = user
+    customer.save()
     product1 = factories.create_product("product1", shop=shop, supplier=supplier)
     product2 = factories.create_product("product2", shop=shop, supplier=supplier, type=invalid_type)
 
@@ -58,6 +61,7 @@ def test_ignored_products(rf):
     request.person = customer
     request.customer = customer
     request.shop = shop
+    request.user = user
     pending_products = get_pending_products_reviews(request)
 
     assert len(pending_products) == 2
