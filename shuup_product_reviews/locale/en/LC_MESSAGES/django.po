@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-06 14:38+0000\n"
+"POT-Creation-Date: 2020-01-15 08:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,6 +39,12 @@ msgid "Show product reviews on dashboard"
 msgstr ""
 
 msgid "Show product reviews on dashboard menu"
+msgstr ""
+
+msgid "Product types to ignore"
+msgstr ""
+
+msgid "Select all product types that should be ignored from reviews"
 msgstr ""
 
 msgid "Approve reviews"
@@ -100,6 +106,27 @@ msgid "review count"
 msgstr ""
 
 msgid "users would recommend"
+msgstr ""
+
+msgid "Product Review Created"
+msgstr ""
+
+msgid "Product Review"
+msgstr ""
+
+msgid "Customer Email"
+msgstr ""
+
+msgid "Customer Phone"
+msgstr ""
+
+msgid "Shop Email"
+msgstr ""
+
+msgid "Shop Phone"
+msgstr ""
+
+msgid "Language"
 msgstr ""
 
 msgid "Product Review Rating"

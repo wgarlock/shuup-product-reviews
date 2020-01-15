@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-06 14:39+0000\n"
+"POT-Creation-Date: 2020-01-15 08:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,6 +39,9 @@ msgid "Vendor"
 msgstr ""
 
 msgid "Filter by vendor..."
+msgstr ""
+
+msgid "A review for this vendor already exists."
 msgstr ""
 
 msgid "Show all"
@@ -73,6 +76,24 @@ msgid "review count"
 msgstr ""
 
 msgid "users would recommend"
+msgstr ""
+
+msgid "Vendor Review Created"
+msgstr ""
+
+msgid "Vendor Review"
+msgstr ""
+
+msgid "Customer Email"
+msgstr ""
+
+msgid "Customer Phone"
+msgstr ""
+
+msgid "Shop Email"
+msgstr ""
+
+msgid "Shop Phone"
 msgstr ""
 
 msgid "Vendor Review Rating"
