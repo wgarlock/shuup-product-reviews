@@ -9,6 +9,7 @@ import math
 
 from django.db.models import Avg, Sum
 
+from shuup.core import cache
 from shuup.core.models import get_person_contact, Order, Supplier
 from shuup_vendor_reviews.models import VendorReviewAggregation
 
@@ -50,3 +51,48 @@ def get_stars_from_rating(rating):
     empty_stars = math.floor(5 - rating)
     half_star = (full_stars + empty_stars) < 5
     return (full_stars, empty_stars, half_star)
+
+
+def render_vendor_review_ratings(vendor, customer_ratings_title=None, show_recommenders=False):
+    """
+    Render the star rating template for a given vendor and options.
+    Returns None if no reviews exists for product
+    """
+    cached_star_rating = get_cached_star_rating(vendor.pk)
+    if cached_star_rating is not None:
+        if cached_star_rating == -1:
+            return ""
+        return cached_star_rating
+
+    vendor_rating = get_reviews_aggregation_for_supplier(vendor)
+    rating = vendor_rating["rating"]
+    star_rating = None
+    if rating:
+        (full_stars, empty_stars, half_star) = get_stars_from_rating(rating)
+        context = {
+            "half_star": half_star,
+            "full_stars": full_stars,
+            "empty_stars": empty_stars,
+            "reviews": vendor_rating["reviews"],
+            "rating": rating,
+            "customer_ratings_title": customer_ratings_title,
+            "show_recommenders": show_recommenders
+        }
+        from django.template import loader
+        star_rating = loader.render_to_string("shuup_vendor_reviews/plugins/vendor_star_rating.jinja", context=context)
+
+    # -1 is a flag that indicates that there is no content to render
+    cache_star_rating(vendor.id, star_rating or -1)
+    return star_rating or ""
+
+
+def get_cached_star_rating(vendor_id):
+    return cache.get("vendor_reviews_star_rating_{}".format(vendor_id))
+
+
+def cache_star_rating(vendor_id, star_rating):
+    cache.set("vendor_reviews_star_rating_{}".format(vendor_id), star_rating)
+
+
+def bump_star_rating_cache(vendor_id):
+    cache.bump_version("vendor_reviews_star_rating_{}".format(vendor_id))

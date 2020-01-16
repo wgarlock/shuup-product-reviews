@@ -51,7 +51,7 @@ class VendorReview(models.Model):
     def save(self, *args, **kwargs):
         super(VendorReview, self).save(*args, **kwargs)
         recalculate_aggregation(self.supplier)
-        from shuup_product_reviews.utils import bump_star_rating_cache
+        from shuup_vendor_reviews.utils import bump_star_rating_cache
         bump_star_rating_cache(self.pk)
 
     def approve(self):
