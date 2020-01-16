@@ -20,15 +20,15 @@
     "homepage": "https://github.com/shuup/shuup-product-reviews",
     "private": true,
     "dependencies": {
-        "autoprefixer": "^8.6.4",
+        "autoprefixer": "^9.6.1",
         "babel-core": "^6.26.3",
         "babel-preset-env": "^1.7.0",
         "lodash.debounce": "^4.0.8",
-        "mithril": "^1.1.6",
-        "parcel-bundler": "^1.12.3",
+        "mithril": "^1.1.7",
+        "parcel-bundler": "^1.12.4",
         "postcss-modules": "^1.1.0",
-        "sass": "^1.14.2",
-        "shuup-static-build-tools": "^1.0.2"
+        "sass": "^1.15.1",
+        "shuup-static-build-tools": "^1.0.3"
     },
     "browsertlist": [
         "> 1%",
