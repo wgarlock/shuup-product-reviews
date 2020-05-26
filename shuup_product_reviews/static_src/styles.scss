@@ -16,6 +16,18 @@ $star-color: #fe8f2e;
     .stars .star-rating-empty {
         color: $star-color;
     }
+
+    &.minified {
+        font-size: 85%;
+
+        .rating {
+            margin: 0;
+        }
+
+        .count {
+            opacity: 0.7;
+        }
+    }
 }
 
 .customer-pending-reviews-table,

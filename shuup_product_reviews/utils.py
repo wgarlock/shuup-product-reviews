@@ -88,7 +88,7 @@ def get_stars_from_rating(rating):
     return (full_stars, empty_stars, half_star)
 
 
-def render_product_review_ratings(product, customer_ratings_title=None, show_recommenders=False):
+def render_product_review_ratings(product, customer_ratings_title=None, show_recommenders=False, minified=False):
     """
     Render the star rating template for a given product and options.
     Returns None if no reviews exists for product
@@ -112,7 +112,8 @@ def render_product_review_ratings(product, customer_ratings_title=None, show_rec
                 "reviews": product_rating["reviews"],
                 "rating": rating,
                 "customer_ratings_title": customer_ratings_title,
-                "show_recommenders": show_recommenders
+                "show_recommenders": show_recommenders,
+                "minified": minified
             }
             from django.template import loader
             star_rating = loader.render_to_string("shuup_product_reviews/plugins/star_rating.jinja", context=context)
