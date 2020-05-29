@@ -60,8 +60,6 @@ def render_vendor_review_ratings(vendor, customer_ratings_title=None, show_recom
     """
     cached_star_rating = get_cached_star_rating(vendor.pk)
     if cached_star_rating is not None:
-        if cached_star_rating == -1:
-            return ""
         return cached_star_rating
 
     vendor_rating = get_reviews_aggregation_for_supplier(vendor)
@@ -81,8 +79,8 @@ def render_vendor_review_ratings(vendor, customer_ratings_title=None, show_recom
         from django.template import loader
         star_rating = loader.render_to_string("shuup_vendor_reviews/plugins/vendor_star_rating.jinja", context=context)
 
-    # -1 is a flag that indicates that there is no content to render
-    cache_star_rating(vendor.id, star_rating or -1)
+    if star_rating is not None:
+        cache_star_rating(vendor.id, star_rating)
     return star_rating or ""
 
 
