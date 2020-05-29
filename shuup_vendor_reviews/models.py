@@ -52,7 +52,7 @@ class VendorReview(models.Model):
         super(VendorReview, self).save(*args, **kwargs)
         recalculate_aggregation(self.supplier)
         from shuup_vendor_reviews.utils import bump_star_rating_cache
-        bump_star_rating_cache(self.pk)
+        bump_star_rating_cache(self.supplier.pk)
 
     def approve(self):
         self.status = ReviewStatus.APPROVED

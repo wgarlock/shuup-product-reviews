@@ -53,7 +53,7 @@ class ProductReview(models.Model):
         super(ProductReview, self).save(*args, **kwargs)
         recalculate_aggregation(self.product)
         from shuup_product_reviews.utils import bump_star_rating_cache
-        bump_star_rating_cache(self.pk)
+        bump_star_rating_cache(self.product.pk)
 
     def approve(self):
         self.status = ReviewStatus.APPROVED
