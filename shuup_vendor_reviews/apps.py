@@ -14,17 +14,22 @@ class AppConfig(shuup.apps.AppConfig):
     verbose_name = "Shuup Vendor Reviews"
     provides = {
         "admin_module": [
-            "shuup_vendor_reviews.admin_module.SupplierReviewsModule"
+            "shuup_vendor_reviews.admin_module.SupplierReviewsModule",
+            "shuup_vendor_reviews.admin_module.SupplierReviewOptionsModule"
         ],
         "admin_shop_form_part": [
             "shuup_vendor_reviews.admin_module.dashboard.VendorReviewsSettingsFormPart",
+            "shuup_vendor_reviews.admin_module.dashboard.VendorReviewsOptionSettingsFormPart",
         ],
         "xtheme_plugin": [
             "shuup_vendor_reviews.plugins.VendorReviewStarRatingsPlugin",
-            "shuup_vendor_reviews.plugins.VendorReviewCommentsPlugin"
+            "shuup_vendor_reviews.plugins.VendorReviewCommentsPlugin",
+            "shuup_vendor_reviews.plugins.VendorReviewOptionStarRatingsPlugin",
+            "shuup_vendor_reviews.plugins.VendorReviewOptionCommentsPlugin",
         ],
         "customer_dashboard_items": [
-            "shuup_vendor_reviews.dashboard_items:VendorReviewDashboardItem"
+            "shuup_vendor_reviews.dashboard_items:VendorReviewDashboardItem",
+            "shuup_vendor_reviews.dashboard_items:VendorReviewWithOptionsDashboardItem"
         ],
         "front_urls": [
             "shuup_vendor_reviews.urls:urlpatterns"
