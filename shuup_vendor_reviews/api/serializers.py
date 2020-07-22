@@ -7,9 +7,9 @@
 # LICENSE file in the root directory of this source tree.
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
+from shuup_vendor_reviews.models import VendorReview
 
 from shuup.core.models import Contact, get_person_contact, Supplier
-from shuup_vendor_reviews.models import VendorReview
 
 
 class VendorSerializer(serializers.ModelSerializer):

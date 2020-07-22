@@ -205,13 +205,10 @@ class VendorReviewOptionsView(DashboardViewMixin, TemplateView):
     template_name = "shuup_vendor_reviews/vendor_review_options.jinja"
 
     def get_context_data(self, **kwargs):
-        print("Data")
         context = super(VendorReviewOptionsView, self).get_context_data(**kwargs)
         pending_suppliers_reviews = get_pending_vendors_reviews(self.request)
         context["reviews"] = VendorReview.objects.for_reviewer(self.request.shop, self.request.person)
         context["review_dict"] = VendorReview.objects.for_reviewer_dict_options(self.request.shop, self.request.person)
-
-        print(pending_suppliers_reviews.exists())
 
         if pending_suppliers_reviews.exists():
             initial_values = [

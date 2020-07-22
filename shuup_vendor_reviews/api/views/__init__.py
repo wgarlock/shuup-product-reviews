@@ -7,13 +7,13 @@
 # LICENSE file in the root directory of this source tree.
 from rest_framework import decorators, filters, mixins, response, viewsets
 from rest_framework.generics import get_object_or_404
-
-from shuup.core.models import get_person_contact, Supplier
 from shuup_vendor_reviews.api.serializers import (
     ReviewSerializer, VendorReviewSerializer, VendorSerializer
 )
 from shuup_vendor_reviews.models import ReviewStatus, VendorReview
 from shuup_vendor_reviews.utils import get_pending_vendors_reviews
+
+from shuup.core.models import get_person_contact, Supplier
 
 
 class VendorReviewsViewSet(viewsets.GenericViewSet):

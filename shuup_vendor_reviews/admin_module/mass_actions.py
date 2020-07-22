@@ -7,11 +7,11 @@
 # LICENSE file in the root directory of this source tree.
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
+from shuup_vendor_reviews.models import VendorReview
 from six import string_types
 
 from shuup.admin.shop_provider import get_shop
 from shuup.admin.utils.picotable import PicotableMassAction
-from shuup_vendor_reviews.models import VendorReview
 
 
 class ApproveVendorReviewMassAction(PicotableMassAction):
