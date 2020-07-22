@@ -10,8 +10,35 @@ from django.db import models
 from django.db.models import Avg, Case, Count, Sum, Value, When
 from django.utils.translation import ugettext_lazy as _
 from enumfields import EnumIntegerField
-
 from shuup_product_reviews.enums import ReviewStatus
+
+from shuup.core.models import Supplier
+
+
+class VendorReviewOption(models.Model):
+    shop = models.ForeignKey(
+        'shuup.Shop',
+        on_delete=models.CASCADE,
+        verbose_name=_("supplier"),
+        related_name="supplier_reviews_option",
+    )
+
+    name = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+    enabled = models.BooleanField(
+        default=False,
+        verbose_name=_("enabled"),
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Vendor Review Option")
+        verbose_name_plural = _("Vendor Review Options")
 
 
 class VendorReviewQuerySet(models.QuerySet):
@@ -20,6 +47,18 @@ class VendorReviewQuerySet(models.QuerySet):
 
     def approved(self):
         return self.filter(status=ReviewStatus.APPROVED)
+
+    def for_reviewer_dict_options(self, shop, reviewer):
+        reviews = dict()
+        suppliers = Supplier.objects.filter(supplier_reviews__reviewer=reviewer)
+
+        for supplier in suppliers:
+            reviews[supplier] = self.filter(shop=shop, reviewer=reviewer, supplier=supplier)
+
+        return reviews
+
+    def for_reviewer_by_option(self, shop, reviewer, option):
+        return self.filter(shop=shop, reviewer=reviewer, option=option).order_by("supplier")
 
 
 class VendorReview(models.Model):
@@ -39,6 +78,13 @@ class VendorReview(models.Model):
     status = EnumIntegerField(ReviewStatus, db_index=True, default=ReviewStatus.PENDING)
     created_on = models.DateTimeField(auto_now_add=True, db_index=True)
     modified_on = models.DateTimeField(auto_now=True)
+    option = models.ForeignKey(
+        VendorReviewOption,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="vendor_review_options"
+    )
 
     objects = VendorReviewQuerySet.as_manager()
 
@@ -50,7 +96,7 @@ class VendorReview(models.Model):
 
     def save(self, *args, **kwargs):
         super(VendorReview, self).save(*args, **kwargs)
-        recalculate_aggregation(self.supplier)
+        recalculate_aggregation(self.supplier, self.option)
         from shuup_vendor_reviews.utils import bump_star_rating_cache
         bump_star_rating_cache(self.supplier.pk)
 
@@ -72,6 +118,13 @@ class VendorReviewAggregation(models.Model):
     rating = models.DecimalField(max_digits=2, decimal_places=1, verbose_name=_("rating"), default=0)
     review_count = models.PositiveIntegerField(verbose_name=_("review count"), default=0)
     would_recommend = models.PositiveIntegerField(verbose_name=_("users would recommend"), default=0)
+    option = models.ForeignKey(
+        VendorReviewOption,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="vendor_review_agg_options"
+    )
 
 
 def recalculate_aggregation_for_queryset(queryset):
@@ -93,12 +146,12 @@ def recalculate_aggregation_for_queryset(queryset):
     )
 
 
-def recalculate_aggregation(supplier):
+def recalculate_aggregation(supplier, option):
     if not supplier:
         return
 
     reviews_agg = recalculate_aggregation_for_queryset(
-        VendorReview.objects.filter(supplier=supplier, status=ReviewStatus.APPROVED)
+        VendorReview.objects.filter(supplier=supplier, status=ReviewStatus.APPROVED, option=option)
     )
     if not reviews_agg:
         aggregation = VendorReviewAggregation.objects.filter(supplier=supplier).first()
@@ -109,5 +162,6 @@ def recalculate_aggregation(supplier):
     VendorReviewAggregation.objects.update_or_create(supplier=supplier, defaults=dict(
         review_count=reviews_agg["count"],
         rating=reviews_agg["rating"],
-        would_recommend=reviews_agg["would_recommend"]
+        would_recommend=reviews_agg["would_recommend"],
+        option=option
     ))
