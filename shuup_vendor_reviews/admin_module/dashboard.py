@@ -24,6 +24,14 @@ def is_dashboard_menu_enabled(shop):
     return configuration.get(shop, "show_vendor_reviews_on_dashboard_menu", True)
 
 
+def is_dashboard_with_options_enabled(shop):
+    return configuration.get(shop, "show_vendor_reviews_with_options_on_dashboard", False)
+
+
+def is_dashboard_menu_with_options_enabled(shop):
+    return configuration.get(shop, "show_vendor_reviews_with_options_on_dashboard_menu", False)
+
+
 class VendorReviewsSettingsForm(BaseSettingsForm):
     title = _("Vendor Reviews Settings")
     show_vendor_reviews_on_dashboard = forms.BooleanField(
@@ -41,4 +49,24 @@ class VendorReviewsSettingsForm(BaseSettingsForm):
 class VendorReviewsSettingsFormPart(BaseSettingsFormPart):
     form = VendorReviewsSettingsForm
     name = "vendor_reviews_settings"
+    priority = 11
+
+
+class VendorReviewsOptionSettingsForm(BaseSettingsForm):
+    title = _("Vendor Reviews Option Settings")
+    show_vendor_reviews_with_options_on_dashboard = forms.BooleanField(
+        label=_("Show vendor reviews with options on dashboard"),
+        required=False,
+        initial=False
+    )
+    show_vendor_reviews_with_options_on_dashboard_menu = forms.BooleanField(
+        label=_("Show vendor reviews with option on dashboard menu"),
+        required=False,
+        initial=False
+    )
+
+
+class VendorReviewsOptionSettingsFormPart(BaseSettingsFormPart):
+    form = VendorReviewsOptionSettingsForm
+    name = "vendor_reviews_options_settings"
     priority = 11
