@@ -8,10 +8,10 @@
 import math
 
 from django.db.models import Avg, Sum
+from shuup_vendor_reviews.models import VendorReviewAggregation
 
 from shuup.core import cache
 from shuup.core.models import get_person_contact, Order, Supplier
-from shuup_vendor_reviews.models import VendorReviewAggregation
 
 
 def get_orders_for_review(request):
@@ -40,6 +40,14 @@ def get_reviews_aggregation_for_supplier(supplier):
         rating=Avg("rating"),
         reviews=Sum("review_count"),
         would_recommend=Sum("would_recommend")
+    )
+
+
+def get_reviews_aggregation_for_supplier_by_option(supplier, option):
+    return VendorReviewAggregation.objects.filter(supplier=supplier, option=option).aggregate(
+        rating=Avg("rating"),
+        reviews=Sum("review_count"),
+        would_recommend=Sum("would_recommend"),
     )
 
 

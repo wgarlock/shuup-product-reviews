@@ -1,0 +1,62 @@
+{% extends "shuup/front/dashboard/dashboard.jinja" %}
+{% from "shuup_vendor_reviews/macros.jinja" import render_reviews_table_with_options with context %}
+{% from "shuup/front/macros/general.jinja" import render_field with context %}
+{% from "shuup/front/macros/general.jinja" import render_field %}
+{% block title -%}{{ _("Vendor Reviews") }}{%- endblock %}
+
+{% block breadcrumb %}
+    {% call macros.breadcrumb() %}
+        {{ macros.render_breadcrumb_item("/", _("Home")) }}
+        {{ macros.render_breadcrumb_item(url("shuup:dashboard"), _("Dashboard")) }}
+        {{ macros.render_breadcrumb_item(None, _("Reviews"), True) }}
+    {% endcall %}
+{% endblock %}
+
+{% block dashboard_content %}
+
+    {% set has_reviews = reviews.exists() %}
+    {% if reviews_formset %}
+        <form method="POST">
+        {{ reviews_formset.management_form }}
+        {% csrf_token %}
+        <h3>{{ _("Vendors to Review") }}</h3>
+        <div class="list-group vendors-to-review">
+            {% for review_form in reviews_formset %}
+                {% set supplier = review_form.initial.supplier %}
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <h3>{{ supplier.name }}</h3>
+                    </div>
+                    <div class="list-group-item-text">
+                            {% for form_option in review_form.forms %}
+                            <hr>
+                            <h4>Option:{{form_option}}</h4>
+                                {{ render_form(review_form.forms[form_option])}}
+                            {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">{{ _("Send Review") }}</button>
+        </div>
+        </form>
+    {% endif %}
+    {% if has_reviews %}
+        <h3>{{ _("Reviews") }}</h3>
+        {{ render_reviews_table_with_options(reviews) }}
+    {% endif %}
+    {% if not reviews_formset and not has_reviews %}
+        <p>{{ _("No vendors to review.") }}</p>
+    {% endif %}
+{% endblock %}
+
+{% macro render_form(form, except_fields=[]) %}
+    {{ form.non_field_errors() }}
+    {% for field in form.hidden_fields() %}{{ field|safe }}{% endfor %}
+    {% for field in form.visible_fields() %}
+        {% if field not in except_fields %}
+            {{ render_field(field) }}
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
