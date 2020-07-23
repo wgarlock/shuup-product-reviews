@@ -13,13 +13,13 @@ from django.shortcuts import reverse
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView
-from shuup_product_reviews.admin_module.base import BaseProductReviewListView
-from shuup_vendor_reviews.models import VendorReview, VendorReviewOption
 
 from shuup.admin.shop_provider import get_shop
 from shuup.admin.toolbar import get_default_edit_toolbar
 from shuup.admin.utils.picotable import Column, TextFilter
 from shuup.admin.utils.views import CreateOrUpdateView, PicotableListView
+from shuup_product_reviews.admin_module.base import BaseProductReviewListView
+from shuup_vendor_reviews.models import VendorReview, VendorReviewOption
 
 
 class VendorReviewListView(BaseProductReviewListView):

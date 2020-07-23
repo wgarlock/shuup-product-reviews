@@ -8,7 +8,6 @@
 from __future__ import unicode_literals
 
 from django.utils.translation import ugettext_lazy as _
-from shuup_vendor_reviews.models import VendorReviewOption
 
 from shuup.admin.base import AdminModule, MenuEntry
 from shuup.admin.menu import SETTINGS_MENU_CATEGORY, STOREFRONT_MENU_CATEGORY
@@ -16,6 +15,7 @@ from shuup.admin.utils.picotable import Column, TextFilter
 from shuup.admin.utils.urls import (
     admin_url, derive_model_url, get_edit_and_list_urls
 )
+from shuup_vendor_reviews.models import VendorReviewOption
 
 
 class SupplierReviewOptionsModule(AdminModule):

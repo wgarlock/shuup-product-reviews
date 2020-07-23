@@ -7,6 +7,7 @@
 # LICENSE file in the root directory of this source tree.
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
 from shuup_vendor_reviews.models import VendorReview
 from shuup_vendor_reviews.notify_events import (
     send_vendor_review_created_notification
