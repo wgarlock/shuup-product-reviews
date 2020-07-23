@@ -7,9 +7,11 @@
 # LICENSE file in the root directory of this source tree.
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
+
 from shuup_vendor_reviews.views import (
-    VendorReviewCommentsView, VendorReviewOptionsCommentsView,
-    VendorReviewOptionsView, VendorReviewsView
+    VendorReviewCommentsOptionsView, VendorReviewCommentsView,
+    VendorReviewOptionsCommentsView, VendorReviewOptionsView,
+    VendorReviewsView
 )
 
 urlpatterns = [
@@ -32,5 +34,10 @@ urlpatterns = [
         r"vendor_reviews/(?P<pk>\d+)/comments/$",
         VendorReviewCommentsView.as_view(),
         name="vendor_review_comments"
+    ),
+    url(
+        r"vendor_reviews/(?P<pk>\d+)/comments/(?P<option>\d+)/$",
+        VendorReviewCommentsOptionsView.as_view(),
+        name="vendor_review_comments_options"
     )
 ]

@@ -11,23 +11,26 @@ from django.db.models import Avg, Case, Count, Sum, Value, When
 from django.utils.translation import ugettext_lazy as _
 
 from enumfields import EnumIntegerField
+from parler.models import TranslatableModel, TranslatedFields
 from shuup.core.models import Supplier
 from shuup_product_reviews.enums import ReviewStatus
 
 
-class VendorReviewOption(models.Model):
+class VendorReviewOption(TranslatableModel):
     shop = models.ForeignKey(
         'shuup.Shop',
         on_delete=models.CASCADE,
         verbose_name=_("supplier"),
         related_name="supplier_reviews_option",
     )
-
-    name = models.CharField(
-        max_length=255,
-        blank=True,
-        null=True,
+    translations = TranslatedFields(
+        name=models.CharField(
+            max_length=255,
+            blank=True,
+            null=True,
+        )
     )
+
     enabled = models.BooleanField(
         default=False,
         verbose_name=_("enabled"),

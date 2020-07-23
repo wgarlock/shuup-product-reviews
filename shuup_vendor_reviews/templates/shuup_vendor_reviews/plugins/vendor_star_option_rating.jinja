@@ -1,4 +1,3 @@
-{% if ratings.keys()|count > 0  %}
     {% for option, reviews in ratings.items() %}
         <h3>{{option}}</h3>
         <div class="product-reviews-rating-star{% if minified %} minified{% endif %}">
@@ -51,7 +50,5 @@
                     {%- endtrans -%}
                 </span>
             {% endif %}
-        
         </div>
     {% endfor %}
-{% endif %}

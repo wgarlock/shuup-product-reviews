@@ -9,15 +9,15 @@ from __future__ import unicode_literals
 
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+
+from shuup.xtheme import TemplatedPlugin
+from shuup.xtheme.plugins.forms import GenericPluginForm, TranslatableField
+from shuup.xtheme.plugins.widgets import XThemeSelect2ModelChoiceField
 from shuup_vendor_reviews.models import VendorReview, VendorReviewOption
 from shuup_vendor_reviews.utils import (
     get_reviews_aggregation_for_supplier,
     get_reviews_aggregation_for_supplier_by_option, get_stars_from_rating
 )
-
-from shuup.xtheme import TemplatedPlugin
-from shuup.xtheme.plugins.forms import GenericPluginForm, TranslatableField
-from shuup.xtheme.plugins.widgets import XThemeSelect2ModelChoiceField
 
 
 class VendorReviewStarRatingsPlugin(TemplatedPlugin):
@@ -162,7 +162,6 @@ class VendorReviewOptionStarRatingsPlugin(TemplatedPlugin):
         ratings = dict()
         option_id = self.config.get("vendor_review_option")
         context["vendor_review_option"] = option_id
-
         if supplier and supplier.enabled and option_id:
             option = VendorReviewOption.objects.get(pk=option_id)
             supplier_rating = get_reviews_aggregation_for_supplier_by_option(supplier, option)
@@ -170,7 +169,6 @@ class VendorReviewOptionStarRatingsPlugin(TemplatedPlugin):
                 rating = supplier_rating["rating"]
                 reviews = supplier_rating["reviews"]
                 (full_stars, empty_stars, half_star) = get_stars_from_rating(rating)
-
                 ratings.update({option: {
                     "half_star": half_star,
                     "full_stars": full_stars,
@@ -226,6 +224,7 @@ class VendorReviewOptionCommentsPlugin(TemplatedPlugin):
 
             if reviews.exists():
                 context["review_supplier"] = supplier
+                context["option"] = option_id
                 context["title"] = self.get_translated_value("title")
                 context["no_reviews_text"] = self.get_translated_value("no_reviews_text")
                 context["load_more_text"] = self.get_translated_value("load_more_text")

@@ -11,17 +11,17 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.core.urlresolvers import reverse
 from django.db.transaction import atomic
 from django.forms import BaseFormSet
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, JsonResponse
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import TemplateView
-from shuup_product_reviews.base import BaseCommentsView
-from shuup_product_reviews.enums import ReviewStatus
-from shuup_vendor_reviews.models import VendorReview, VendorReviewOption
-from shuup_vendor_reviews.utils import get_pending_vendors_reviews
+from django.views.generic import TemplateView, View
 
 from shuup.core.models import Supplier
 from shuup.front.views.dashboard import DashboardViewMixin
 from shuup.utils.form_group import FormGroup
+from shuup_product_reviews.base import BaseCommentsView
+from shuup_product_reviews.enums import ReviewStatus
+from shuup_vendor_reviews.models import VendorReview, VendorReviewOption
+from shuup_vendor_reviews.utils import get_pending_vendors_reviews
 
 
 class VendorReviewForm(forms.Form):
@@ -108,8 +108,6 @@ class VendorReviewCommentsView(BaseCommentsView):
             return paginator.page(paginator.num_pages)
 
 
-##############
-
 class VendorReviewOptionForm(forms.Form):
     supplier = forms.ModelChoiceField(queryset=Supplier.objects.all(), widget=forms.HiddenInput())
     rating = forms.IntegerField(
@@ -148,7 +146,7 @@ class VendorReviewOptionForm(forms.Form):
         data = self.cleaned_data
 
         if data.get("rating"):
-            VendorReview.objects.update_or_create(
+            review, created = VendorReview.objects.update_or_create(
                 supplier=data["supplier"],
                 reviewer=self.request.person,
                 shop=self.request.shop,
@@ -242,6 +240,53 @@ class VendorReviewOptionsCommentsView(BaseCommentsView):
         supplier = Supplier.objects.filter(pk=self.kwargs["pk"], shops=self.request.shop).first()
         queryset = VendorReview.objects.approved().filter(
             supplier=supplier, shop=self.request.shop, comment__isnull=False
+        ).order_by("-created_on")
+
+        paginator = Paginator(queryset, settings.VENDOR_REVIEWS_PAGE_SIZE)
+        page = self.request.GET.get('page')
+
+        try:
+            return paginator.page(page)
+        except PageNotAnInteger:
+            return paginator.page(1)
+        except EmptyPage:
+            return paginator.page(paginator.num_pages)
+
+
+class VendorReviewCommentsOptionsView(View):
+    view_name = "vendor_review_comments_options"
+
+    def get(self, request, *args, **kwargs):
+        page = self.get_reviews_page()
+        reviews = [
+            {
+                "id": review.pk,
+                "date": review.created_on.isoformat(),
+                "rating": review.rating,
+                "comment": review.comment,
+                "reviewer": review.reviewer.name,
+                "option": review.option.pk
+            }
+            for review in page.object_list
+        ]
+
+        next_page_url = None
+        if page.has_next():
+            next_page_url = "{}?page={}".format(
+                reverse('shuup:%s' % self.view_name, kwargs=dict(pk=self.kwargs["pk"])),
+                page.number + 1
+            )
+
+        payload = {
+            "reviews": reviews,
+            "next_page_url": next_page_url,
+        }
+        return JsonResponse(payload)
+
+    def get_reviews_page(self):
+        supplier = Supplier.objects.filter(pk=self.kwargs["pk"], shops=self.request.shop).first()
+        queryset = VendorReview.objects.approved().filter(
+            supplier=supplier, shop=self.request.shop, comment__isnull=False, option_id=self.kwargs["option"]
         ).order_by("-created_on")
 
         paginator = Paginator(queryset, settings.VENDOR_REVIEWS_PAGE_SIZE)
