@@ -9,10 +9,10 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Avg, Case, Count, Sum, Value, When
 from django.utils.translation import ugettext_lazy as _
-from enumfields import EnumIntegerField
-from shuup_product_reviews.enums import ReviewStatus
 
+from enumfields import EnumIntegerField
 from shuup.core.models import Supplier
+from shuup_product_reviews.enums import ReviewStatus
 
 
 class VendorReviewOption(models.Model):
@@ -50,7 +50,7 @@ class VendorReviewQuerySet(models.QuerySet):
 
     def for_reviewer_dict_options(self, shop, reviewer):
         reviews = dict()
-        suppliers = Supplier.objects.filter(supplier_reviews__reviewer=reviewer)
+        suppliers = Supplier.objects.filter(supplier_reviews__reviewer=reviewer, enabled=True)
 
         for supplier in suppliers:
             reviews[supplier] = self.filter(shop=shop, reviewer=reviewer, supplier=supplier)
@@ -89,7 +89,8 @@ class VendorReview(models.Model):
     objects = VendorReviewQuerySet.as_manager()
 
     def __str__(self):
-        return _("Review for {supplier} by {reviewer_name}").format(
+        return _("{option}Review for {supplier} by {reviewer_name}").format(
+            option=(self.option.name + " " if self.option else ""),
             supplier=self.supplier,
             reviewer_name=self.reviewer.name
         )
@@ -98,7 +99,7 @@ class VendorReview(models.Model):
         super(VendorReview, self).save(*args, **kwargs)
         recalculate_aggregation(self.supplier, self.option)
         from shuup_vendor_reviews.utils import bump_star_rating_cache
-        bump_star_rating_cache(self.supplier.pk)
+        bump_star_rating_cache(self.supplier.pk, (self.option.pk if self.option else ""))
 
     def approve(self):
         self.status = ReviewStatus.APPROVED
@@ -110,7 +111,7 @@ class VendorReview(models.Model):
 
 
 class VendorReviewAggregation(models.Model):
-    supplier = models.OneToOneField(
+    supplier = models.ForeignKey(
         "shuup.Supplier",
         verbose_name=_("supplier"),
         related_name="supplier_reviews_aggregation",
@@ -125,6 +126,15 @@ class VendorReviewAggregation(models.Model):
         on_delete=models.SET_NULL,
         related_name="vendor_review_agg_options"
     )
+
+    def __str__(self):
+        return "{option} VendorReviewAggregation for {supplier}".format(
+            option=(self.option.name if self.option else ""),
+            supplier=self.supplier.name
+        )
+
+    class Meta:
+        unique_together = ('supplier', 'option')
 
 
 def recalculate_aggregation_for_queryset(queryset):
@@ -154,14 +164,13 @@ def recalculate_aggregation(supplier, option):
         VendorReview.objects.filter(supplier=supplier, status=ReviewStatus.APPROVED, option=option)
     )
     if not reviews_agg:
-        aggregation = VendorReviewAggregation.objects.filter(supplier=supplier).first()
+        aggregation = VendorReviewAggregation.objects.filter(supplier=supplier, option=option).first()
         if aggregation:
             aggregation.delete()
         return
 
-    VendorReviewAggregation.objects.update_or_create(supplier=supplier, defaults=dict(
+    VendorReviewAggregation.objects.update_or_create(supplier=supplier, option=option, defaults=dict(
         review_count=reviews_agg["count"],
         rating=reviews_agg["rating"],
         would_recommend=reviews_agg["would_recommend"],
-        option=option
     ))
