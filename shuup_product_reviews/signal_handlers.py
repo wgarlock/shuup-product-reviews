@@ -9,9 +9,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from shuup_product_reviews.models import ProductReview
-from shuup_product_reviews.notify_events import (
+from shuup_product_reviews.notify_events import \
     send_product_review_created_notification
-)
 
 
 @receiver(post_save, sender=ProductReview)

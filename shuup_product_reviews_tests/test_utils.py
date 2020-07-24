@@ -31,7 +31,13 @@ def test_comments_view():
         totals = get_reviews_aggregation_for_product(product)
         rendered = render_product_review_ratings(product)
 
-        assert '<span class="rating">%0.1f</span>' % totals["rating"] in rendered
+        expected_rating = """
+            <span class="rating">
+                %0.1f
+                <span class="sr-only">Rating&nbsp;</span>
+            </span>
+        """ % totals["rating"]
+        assert expected_rating in rendered
         assert '%d reviews' % totals["reviews"] in rendered
 
         rendered = render_product_review_ratings(product_no_reviews)
