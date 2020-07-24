@@ -9,9 +9,9 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Avg, Case, Count, Sum, Value, When
 from django.utils.translation import ugettext_lazy as _
+
 from enumfields import EnumIntegerField
 from parler.models import TranslatableModel, TranslatedFields
-
 from shuup.core.models import Supplier
 from shuup_product_reviews.enums import ReviewStatus
 

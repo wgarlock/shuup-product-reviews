@@ -13,6 +13,7 @@ from django.shortcuts import reverse
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView
+
 from shuup.admin.forms import ShuupAdminForm
 from shuup.admin.shop_provider import get_shop
 from shuup.admin.toolbar import get_default_edit_toolbar
