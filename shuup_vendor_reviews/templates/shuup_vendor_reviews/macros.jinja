@@ -28,3 +28,40 @@
     {% endfor %}
 </div>
 {% endmacro %}
+
+{% macro render_reviews_table_with_options(reviews, show_supplier_info=False) %}
+<div class="list-group customer-reviews-table">
+    {% for supplier, reviews in review_dict.items() %}
+    
+    <div class="list-group-item">
+        <div class="list-group-item-heading">
+            {% if supplier.logo %}
+                <div class="text-center image-container">
+                    <img src="{{ supplier.logo|thumbnail(size=(50, 50)) }}" />
+                </div>
+            {% endif %}
+            <div class="text-center name-container">
+                <a href="{{ url('shuup:supplier', pk=supplier.pk) }}">
+                    <h3>{{ supplier.name }}</h3>
+                </a>
+            </div>
+        </div>
+        {% for review in reviews %}
+        <br>
+        <div class="list-group-item-text">
+            <div class="review-rating">
+            <h5>{{review.option}}</h5>
+                {% for index in range(review.rating) %}
+                    <i class="fa fa-star rating-star"></i>
+                {% endfor %}
+            </div>
+            <div class="review-comment">
+                {{ review.comment or "" }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% endfor %}
+</div>
+{% endmacro %}

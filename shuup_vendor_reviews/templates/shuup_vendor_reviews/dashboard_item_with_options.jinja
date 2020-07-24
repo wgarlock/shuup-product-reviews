@@ -1,0 +1,14 @@
+{% extends "shuup/front/dashboard/dashboard_base.jinja" %}
+{% from "shuup_vendor_reviews/macros.jinja" import render_reviews_table with context %}
+
+{% block dashboard_item_content %}
+hello
+    {% if reviews %}
+        <h3>{{ _("Last reviews") }}</h3>
+        {{ render_reviews_table(reviews) }}
+    {% else %}
+        <p id="no-reviews-found" class="lead">
+            <i class="fa fa-info-circle text-info"></i> {% trans %}You haven't made any reviews yet.{% endtrans %}
+        </p>
+    {% endif %}
+{% endblock %}
