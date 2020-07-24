@@ -91,7 +91,7 @@ def render_vendor_review_ratings(
         star_rating = loader.render_to_string("shuup_vendor_reviews/plugins/vendor_star_rating.jinja", context=context)
 
     if star_rating is not None:
-        cache_star_rating(vendor.id, (option.pk if option else ""), star_rating)
+        cache_star_rating(vendor.id, star_rating, (option.pk if option else ""))
 
     return star_rating or ""
 
@@ -105,11 +105,12 @@ def get_cached_star_rating(vendor_id, option_id=None):
 
 
 def cache_star_rating(vendor_id, star_rating, option_id=None):
-    cache.set("vendor_reviews_star_rating_{}_{}".format(
+    key = "vendor_reviews_star_rating_{}_{}".format(
         vendor_id,
         (option_id or "")
-        ), star_rating
-    )
+        )
+
+    cache.set(key, star_rating)
 
 
 def bump_star_rating_cache(vendor_id, option_id=None):
