@@ -43,6 +43,14 @@ def get_reviews_aggregation_for_supplier(supplier):
     )
 
 
+def get_reviews_aggregation_for_supplier_by_option(supplier, option):
+    return VendorReviewAggregation.objects.filter(supplier=supplier, option=option).aggregate(
+        rating=Avg("rating"),
+        reviews=Sum("review_count"),
+        would_recommend=Sum("would_recommend"),
+    )
+
+
 def get_stars_from_rating(rating):
     """
     Returns the number of full stars, empty stars and whether it has a half star
@@ -53,12 +61,14 @@ def get_stars_from_rating(rating):
     return (full_stars, empty_stars, half_star)
 
 
-def render_vendor_review_ratings(vendor, customer_ratings_title=None, show_recommenders=False, minified=False):
+def render_vendor_review_ratings(
+        vendor, option=None, customer_ratings_title=None, show_recommenders=False, minified=False):
     """
     Render the star rating template for a given vendor and options.
     Returns None if no reviews exists for product
     """
-    cached_star_rating = get_cached_star_rating(vendor.pk)
+
+    cached_star_rating = get_cached_star_rating(vendor.pk, (option.pk if option else ""))
     if cached_star_rating is not None:
         return cached_star_rating
 
@@ -81,17 +91,30 @@ def render_vendor_review_ratings(vendor, customer_ratings_title=None, show_recom
         star_rating = loader.render_to_string("shuup_vendor_reviews/plugins/vendor_star_rating.jinja", context=context)
 
     if star_rating is not None:
-        cache_star_rating(vendor.id, star_rating)
+        cache_star_rating(vendor.id, (option.pk if option else ""), star_rating)
+
     return star_rating or ""
 
 
-def get_cached_star_rating(vendor_id):
-    return cache.get("vendor_reviews_star_rating_{}".format(vendor_id))
+def get_cached_star_rating(vendor_id, option_id=None):
+    return cache.get("vendor_reviews_star_rating_{}_{}".format(
+        vendor_id,
+        (option_id or "")
+        )
+    )
 
 
-def cache_star_rating(vendor_id, star_rating):
-    cache.set("vendor_reviews_star_rating_{}".format(vendor_id), star_rating)
+def cache_star_rating(vendor_id, star_rating, option_id=None):
+    cache.set("vendor_reviews_star_rating_{}_{}".format(
+        vendor_id,
+        (option_id or "")
+        ), star_rating
+    )
 
 
-def bump_star_rating_cache(vendor_id):
-    cache.bump_version("vendor_reviews_star_rating_{}".format(vendor_id))
+def bump_star_rating_cache(vendor_id, option_id=None):
+    cache.bump_version("vendor_reviews_star_rating_{}_{}".format(
+        vendor_id,
+        (option_id or "")
+        )
+    )
