@@ -1,0 +1,10 @@
+{% if review_supplier %}
+<div
+    class="product-review-comments"
+    data-url="{{ url('shuup:vendor_review_comments_options', pk=review_supplier.pk, option=option) }}"
+    data-title="{{ title or "" }}"
+    data-no-reviews-text="{{ no_reviews_text or _('The vendor has no reviews.') }}"
+    data-load-more-text="{{ load_more_text or _('Load more comments') }}"
+    data-option="{{option}}"
+></div>
+{% endif %}
