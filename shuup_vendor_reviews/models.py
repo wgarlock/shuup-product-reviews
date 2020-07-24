@@ -20,7 +20,7 @@ class VendorReviewOption(TranslatableModel):
     shop = models.ForeignKey(
         'shuup.Shop',
         on_delete=models.CASCADE,
-        verbose_name=_("supplier"),
+        verbose_name=_("shop"),
         related_name="supplier_reviews_option",
     )
     translations = TranslatedFields(
