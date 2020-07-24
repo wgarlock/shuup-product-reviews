@@ -10,8 +10,50 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 
 from shuup.admin.base import AdminModule, MenuEntry
-from shuup.admin.menu import SETTINGS_MENU_CATEGORY
-from shuup.admin.utils.urls import admin_url
+from shuup.admin.menu import SETTINGS_MENU_CATEGORY, STOREFRONT_MENU_CATEGORY
+from shuup.admin.utils.picotable import Column, TextFilter
+from shuup.admin.utils.urls import (
+    admin_url, derive_model_url, get_edit_and_list_urls
+)
+from shuup_vendor_reviews.models import VendorReviewOption
+
+
+class SupplierReviewOptionsModule(AdminModule):
+    name = _("Vendor Review Options")
+    breadcrumbs_menu_entry = MenuEntry(name, url="shuup_admin:vendor_reviews_options.list")
+
+    default_columns = [
+        Column("name", _(u"Name"), linked=True, filter_config=TextFilter()),
+    ]
+
+    def get_urls(self):
+        return [
+            admin_url(
+                r"^vendor_reviews_options/(?P<pk>\d+)/delete/$",
+                "shuup_vendor_reviews.admin_module.views.VendorReviewOptionDeleteView",
+                name="vendor_reviews_options.delete"
+            ),
+
+        ] + get_edit_and_list_urls(
+            url_prefix="^vendor_reviews_options",
+            view_template="shuup_vendor_reviews.admin_module.views.VendorReviewOption%sView",
+            name_template="vendor_reviews_options.%s"
+        )
+
+    def get_model_url(self, object, kind, shop=None):
+        return derive_model_url(VendorReviewOption, "shuup_admin:vendor_reviews_options", object, kind)
+
+    def get_menu_entries(self, request):
+        return [
+            MenuEntry(
+                text=self.name,
+                icon="fa fa-star",
+                url="shuup_admin:vendor_reviews_options.list",
+                category=STOREFRONT_MENU_CATEGORY,
+                subcategory="other_settings",
+                ordering=6
+            )
+        ]
 
 
 class SupplierReviewsModule(AdminModule):
