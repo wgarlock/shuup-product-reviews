@@ -50,6 +50,40 @@ class VendorReviewsViewSet(viewsets.GenericViewSet):
         return "Vendor Reviews - Reviews"
 
 
+class VendorReviewsOptionViewSet(viewsets.GenericViewSet):
+    """
+    List all reviews from a given vendor
+    """
+    queryset = VendorReview.objects.none()
+    serializer_class = VendorReviewSerializer
+
+    def get_queryset(self):
+        return VendorReview.objects.filter(
+            shop=self.request.shop,
+            supplier=self.get_object(),
+            status=ReviewStatus.APPROVED
+        ).order_by("-created_on")
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return response.Response(serializer.data)
+
+    def get_object(self):
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+        filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
+        return get_object_or_404(Supplier.objects.all(), **filter_kwargs)
+
+    def get_view_name(self):
+        return "Vendor Reviews - Reviews"
+
+
 class ReviewFilters(filters.BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
         # Filter the views by a given vendor
